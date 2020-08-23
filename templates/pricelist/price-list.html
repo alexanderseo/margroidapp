@@ -1,0 +1,69 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Маргроид | Прайс-лист{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		{% include 'widgets/left-info-menu.html' with start_width=4 caption_width=9 %}
+		<div class="col-xl-8 col-md-8" id="price-list-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Прайс-лист</span>
+			</div>
+			<div class="main-content">
+				<h1>Прайс-лист ({{ selected_category }}). Всего: {{ products.count }}.</h1>
+				<div class="pricelist-actions">
+					<form method="GET" id="pricelist-form">
+						<div class="form-group item-action" style="display: inline-block;">
+							<input type="hidden" name="selected-category" value="">
+							<select class="form-control" id="category-select">
+								<option>Все категории</option>
+								{% for category in categories %}
+								{% if category.subtype.all %}
+								{% for subcategory in category.subtype.all %}
+								<option>{{ category.name }} / {{ subcategory.name }}</option>
+								{% endfor %}
+								{% else %}
+								<option>{{ category.name }}</option>
+								{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</form>
+					<div class="item-action" style="margin-left: 10px;">
+						<a style="text-decoration: none;" href="{% url 'print_pricelist_view' selected_category_to_print %}">Печатная форма</a>
+					</div>
+					<div class="item-action" style="margin-left: 10px;">
+						<a style="text-decoration: none;" href="/media/report.xlsx" download>Excel форма</a>
+					</div>
+				</div>
+				<div class="container" style="margin-bottom: 50px;">
+					{% for product in products %}
+					<div class="row pricelist-item">
+						<div class="col-xl-10 col-lg-10 col-md-9 col-sm-9">
+							<a href="{% url 'product_detail_view' product.id %}">{{ product.name|upper }}</a>
+						</div>
+						<div class="col-xl-2 col-lg-2 col-md-3 col-sm-3" align="right">
+							{% if product.on_sale %}
+							<span class="product-price">{{ product.new_price }} ₽</span>
+							{% else %}
+							<span class="product-price">{{ product.price }} ₽</span>
+							{% endif %}
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.getElementById('category-select').value="{{ selected_category }}";
+</script>
+
+{% endblock content %}

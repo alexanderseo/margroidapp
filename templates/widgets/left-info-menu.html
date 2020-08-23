@@ -1,0 +1,70 @@
+<div class="col-md-{{ start_width }}" id="left-side-menu">
+	<p class="menu-header">Категории</p>
+	<div id="menu-categories">
+		{% for category in categories %}
+		{% if category.subtype.all %}
+		<a href="#{{ category.id }}" class="list-group-item" data-toggle="collapse" data-parent="#menu-categories">
+			{% if category.subtype.all %}
+			<i class="fa fa-chevron-right" aria-hidden="true"></i>
+			{% endif %}
+			{{ category.name }}
+		</a>
+		<div class="collapse list-group-level1" id="{{ category.id }}">
+			{% for subtype in category.subtype.all reversed %}
+			<a href="{% url 'subcategory_detail_view' category.slug subtype.slug  %}" class="list-group-item" data-parent="#{{ category.id }}">{{ subtype.name }}</a>
+			{% endfor %}
+		</div>
+		{% else %}
+		<a href="{% url 'components_view' %}" data-toggle="no-collapse" class="list-group-item">Комплектующие</a>
+		{% endif %}
+		{% endfor %}
+	</div>
+
+	<div id="menu-on-sale-wrapper">
+		<div class="ribbon"><span>SALE</span></div>
+		<p class="menu-header">Товары на акции</p>
+		<div id="menu-on-sale">
+			{% for product in products_on_sale %}
+			<div class="product-on-sale">
+				<div class="row">
+					<div class="col-xl-auto col-md-12">
+						<a href="{% url 'product_detail_view' product.id %}"><img alt="{{ product.name }}" src="{{ product.image.url }}" width="50"></a>
+					</div>
+					<div class="col-xl-{{ caption_width }} col-md-12">
+						<a href="{% url 'product_detail_view' product.id %}" class="pr-sale-name">{{ product.name }}</a><br style="clear:both" />
+						<span class="sale-size">(-{{ product.sale }}%)</span>
+						<p class="pr-sale-price">{{ product.new_price }}</p>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div id="menu-watched-products-wrapper">
+		<p class="menu-header">Просмотренные товары</p>
+		<div id="menu-watched-products-content">
+			{% for product in watched_products %}
+			<div class="watched-product-item">
+				<div class="row">
+					<div class="col-xl-auto col-md-12">
+						<a href=""><img alt="{{ product.name }}" src="{{ product.image.url }}" width="50"></a>
+					</div>
+					<div class="col-xl-{{ caption_width }} col-md-12">
+						<a class="pr-watched-name" href="">{{ product.name }}</a><br style="clear:both" />
+						{% if product.on_sale %}
+						<p class="pr-watched-price">{{ product.new_price }}</p>
+						{% else %}
+						<p class="pr-watched-price">{{ product.price }}</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+
+	<p class="menu-header">Изготовление полотенцесушителей по индивидуальным размерам.</p>
+	<p class="left-menu-bottom">С учетом собственного производства мы имеем возможно изготавливать полотенцесушителей по индивидуальным размерам и посадочным местам.</p>
+
+</div>

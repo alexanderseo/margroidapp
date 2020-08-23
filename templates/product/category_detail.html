@@ -1,0 +1,42 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_category.title %}
+    {{ current_category.title }}
+    {% else %}
+    {{ current_category.name }} | Маргроид
+    {% endif %}
+{% endblock title %}
+{% block META_description %}
+    {% spaceless %}
+        {% if current_category.description %}
+            {{ current_category.description }}
+        {% else %}
+            {{ current_category|lower|capfirst }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		{% include 'left-info-menu.html' with start_width=4 caption_width=9 %}
+		<div class="col-xl-8 col-md-8 category-detail">
+			<h1>{{ current_category }}</h1>
+			<div class="row">
+				{% for subcategory in category_products.subtype.all reversed %}
+				<div class="col-xl-4 col-lg-6">
+					<div class="category-detail-item">
+						<a href="{% url 'subcategory_detail_view' current_category.slug subcategory.slug %}"><img alt="{{ subcategory.name }}" src="{{ subcategory.image.url }}" height="200"></a>
+						<p><a href="{% url 'subcategory_detail_view' current_category.slug subcategory.slug %}">{{ subcategory.name }}</a></p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

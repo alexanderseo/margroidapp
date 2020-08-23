@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Маргроид | Магазин полотенцесушителей.</title>
+	<link rel="shortcut icon" href="{% static 'img/tdvels_icon.png' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+</head>
+<body>
+	<h2>Прайс-лист "Магазин полотенцесушителей."</h2>
+	<table border="1" cellpadding="5">
+		<tr>
+			<th align="left">{{ category }}</th>
+			<th>₽</th>
+		</tr>
+		{% for product in products %}
+		<tr>
+			<td width="100%">{{ product.name }}</td>
+			{% if product.on_sale %}
+			<td>{{ product.new_price }}</td>
+			{% else %}
+			<td>{{ product.price }}</td>
+			{% endif %}
+		</tr>
+		{% endfor %}
+	</table>
+</body>
+</html>

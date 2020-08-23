@@ -1,0 +1,9 @@
+<div class="col-md-3" id="profile-left-menu">
+	<ul>
+		<li is-active="{{ cart_state }}"><a href="{% url 'cart_view' %}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> Корзина</li></a>
+		<li is-active="{{ personal_data_state }}"><a href="{% url 'profile_view' %}"><i class="fa fa-user" aria-hidden="true"></i> Личные данные</li></a>
+		<li is-active="{{ orders_state }}"><a href="{% url 'orders_view' %}"><i class="fa fa-list-alt" aria-hidden="true"></i> Мои заказы</li></a>
+		<li is-active="{{ compare_state }}"><a href="{% url 'compare_view' %}"><i class="fa fa-files-o" aria-hidden="true"></i> Сравнение</li></a>
+		<li><a href="{% url 'logout_view' %}"><i class="fa fa-sign-out" aria-hidden="true"></i> Выйти</li></a>
+	</ul>
+</div>

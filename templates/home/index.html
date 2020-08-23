@@ -1,0 +1,197 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}
+    {{ seo.title_home_page }}
+{% endblock %}
+{% block META_description %}
+  {{ seo.description_home_page }}
+{% endblock %}
+
+{% block content %}
+	<main>
+
+		<div class="container" id="main-carousel">
+			<div id="carouselExampleIndicators" class="carousel slide col-xl-12 col-lg-12 col-md-12" data-ride="carousel">
+				<ol class="carousel-indicators" style="filter: invert(100%);">
+					<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+					<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner">
+
+					<div align="center" class="carousel-item active">
+
+						<a href=""><img alt="" src="" height="400"></a>
+
+						<a href=""><img src="" alt="" height="400"></a>
+
+						<div class="carousel-caption">
+
+							<a href=""><p></p></a>
+
+							<a href=""><p></p></a>
+
+						</div>
+					</div>
+
+					<div align="center" class="carousel-item">
+
+						<a href=""><img src="" alt="First slide" height="400"></a>
+
+						<a href=""><img src="" alt="" height="400"></a>
+
+						<div class="carousel-caption">
+
+							<a href=""><p></p></a>
+
+							<a href=""><p></p></a>
+
+						</div>
+					</div>
+
+				</div>
+				<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="container" id="new-goods-container">
+			<h2 align="center">Акции</h2>
+
+			<div class="row">
+
+				<div class="new-item-wrapper col-xl-3 col-lg-4 col-md-6 col-sm-6">
+					<div class="ribbon"><span>% SALE</span></div>
+					<div class="new-product-item">
+						<a href=""><img src="" height="300"></a>
+						<p align="center" class="new-product-name"><a href=""></a></p>
+						<p class="new-price"></p>
+						<div class="new-item-footer">
+							<span class="new-product-price">
+
+							</span>
+							<span data-toggle="tooltip" data-placement="top" title="Сравнить" class="item-compare" items-compare="" product-id=""><i class="fa fa-files-o" aria-hidden="true"></i></span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="container" id="news">
+			<h2 align="center"><a href="">Новости</a></h2>
+
+			<div class="row">
+
+				<div class="col-xl-12 news-item" style="position: relative;">
+					<p><a href=""></a></p>
+					<p class="text-muted"></p>
+					<p><a href="" style="text-decoration: none;">читать далее</a></p>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="container" id="contacts">
+			<h2 align="center">Контакты</h2>
+			<div class="" id="contact-changer">
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6" align="center">
+						<i class="fa fa-map-marker" aria-hidden="true"></i>
+					</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6" align="center">
+						<i class="fa fa-phone" aria-hidden="true"></i>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 contact-info" align="center">
+						<p>Западная улица, стр 100 рабочий посёлок Новоивановское, Одинцовский городской округ (2 этаж, павильон B-71).</p>
+					</div>
+					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 contact-info" align="center">
+						<p>8 (977) 873-01-77</p>
+					</div>
+				</div>
+			</div>
+
+			<style type="text/css">
+				.marker {
+					background-image: url('/static/img/mapbox-icon.png');
+					background-size: cover;
+					width: 50px;
+					height: 50px;
+					border-radius: 50%;
+					cursor: pointer;
+				}
+			</style>
+
+			<div class="row" id="contact-block" style="margin-bottom: 100px;">
+				<div class="col-md-6" style="margin-right: 0; padding-right: 0;">
+					<div id='map' style='width: 100%; height: 450px;'></div>
+
+					<script>
+
+						mapboxgl.accessToken = 'pk.eyJ1IjoiYWxleHBldHVsIiwiYSI6ImNrN2t4d203cDAyODczbG10MWV5OW81eTYifQ.QiHe1vd_4ugNwU7m51WmTg';
+						var map = new mapboxgl.Map({
+							container: 'map',
+							center: [37.375181269449385, 55.7128970055779],
+							zoom: 15,
+							bearing: 0,
+							style: 'mapbox://styles/mapbox/streets-v11'
+						});
+						var geojson = {
+							type: 'FeatureCollection',
+							features: [{
+								type: 'Feature',
+								geometry: {
+									type: 'Point',
+									coordinates: [37.375181269449385, 55.7128970055779]
+								},
+								properties: {
+									title: 'Mapbox',
+									description: 'Washington, D.C.'
+								}
+							},
+							{
+								type: 'Feature',
+								geometry: {
+									type: 'Point',
+									coordinates: [37.375181269449385, 55.7128970055779]
+								},
+								properties: {
+									title: 'Mapbox',
+									description: 'San Francisco, California'
+								}
+							}]
+						};
+						geojson.features.forEach(function(marker) {
+
+						  // create a HTML element for each feature
+						  var el = document.createElement('div');
+						  el.className = 'marker';
+
+						  // make a marker for each feature and add to the map
+						  new mapboxgl.Marker(el)
+						  .setLngLat(marker.geometry.coordinates)
+						  .addTo(map);
+						});
+</script>
+</div>
+<div class="col-md-6" id="contact-form-right">
+	<form id="send-feedback-form" method="POST">
+
+		<button class="btn btn-info" id="send-feedback" style="width: 100%;">Отправить</button>
+	</form>
+</div>
+</div>
+</div>
+</main>
+
+{% endblock content %}

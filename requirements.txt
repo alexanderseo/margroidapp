@@ -1,0 +1,13 @@
+Django==2.2.15
+django-cleanup==5.0.0
+django-crispy-forms==1.9.1
+django-debug-toolbar==2.2
+et-xmlfile==1.0.1
+jdcal==1.4.1
+openpyxl==2.6.4
+Pillow==7.1.2
+psycopg2==2.8.5
+python-slugify==4.0.0
+pytz==2020.1
+sqlparse==0.3.1
+text-unidecode==1.3

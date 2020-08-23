@@ -1,0 +1,205 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block description %}<meta name="description" content="{{ compare_description }}">{% endblock description %}
+{% block title %}{{ compare_title }}{% endblock title %}
+
+{% block content %}
+
+<div class="container" id="compare-wrapper">
+	<div class="row">
+		{% if not comparison_list_products %}
+		{% include 'widgets/profile-left-menu.html' %}
+		{% endif %}
+		{% if not comparison_list_products %}		
+		<div class="col-lg-9" id="compare-content">
+		{% else %}
+		<div class="col-lg-12" id="compare-content">
+		{% endif %}
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Сравнение</span>
+			</div>
+			<div class="main-content">
+				<h1>Сравнение</h1>
+				{% if not comparison_list_products %}
+				<div align="center" class="col-sm-12 empty-state-wrapper">
+					<img src="{% static 'img/empty_state.png' %}" class="img-fluid">
+					<p>Вы не добавили ни одного товара в сравнение.<br>Возвращайтесь на <a href="{% url 'base_view' %}">главную страницу</a> и продолжайте поиск!</p>
+				</div>
+				{% else %}
+				<div class="comparison">
+					<div class="row comparison-row">
+						<table>
+							<thead>
+								<tr>
+									<th></th>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<th class="price-info" colspan="{{ value }}">
+										<a href="{% url 'product_detail_view' product.id %}"><img src="{{ product.image.url }}" height="150"></a>
+									</th>
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+								</tr>
+								<tr class="compare-row">
+									<td>Название товара</td>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span><a href="{% url 'product_detail_view' product.id %}">{{ product.name }}</a></span></td>
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+								<tr></tr>
+								<tr>
+									<td>Категория</td>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>{{ product.category.name }}</span></td>
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr class="compare-row">
+									<td>Подкатегория</td>
+									{% for product in comparison_list_products %}
+									{% if product.sub_category %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>{{ product.sub_category.name }}</span></td>
+									{% endif %}
+									{% endfor %}
+									{% else %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>-</span></td>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr>
+									<td>Артикул</td>
+									{% for product in comparison_list_products %}
+									{% if product.vendor_code %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>{{ product.vendor_code }}</span></td>
+									{% endif %}
+									{% endfor %}
+									{% else %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>-</span></td>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr class="compare-row">
+									<td>Цвета</td>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									{% if key in products_colors %}
+									<td colspan="{{ value }}"><span> {{ products_colors|get_item:key }} </span></td>
+									{% else %}
+									<td colspan="{{ value }}"><span>-</span></td>
+									{% endif %}
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr>
+									<td>На складе</td>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td colspan="{{ value }}"><span>{{ product.in_stock }} шт.</span></td>
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr class="compare-row">
+									<td>Размеры</td>
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									{% if key in sizes_count %}
+									<td colspan="{{ value }}"><span>{{ sizes_count|get_item:key }}</span></td>
+									{% else %}
+									<td colspan="{{ value }}"><span>0</span></td>
+									{% endif %}
+									{% else %}
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr>
+									<td>Цена</td>
+									{% for product in comparison_list_products %}
+									{% if product.on_sale %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td class="product-price" colspan="{{ value }}"><span>{{ product.new_price }}</i></span></td>
+									{% endif %}
+									{% endfor %}
+									{% else %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<td class="product-price" colspan="{{ value }}"><span>{{ product.price }} </i></span></td>
+									{% endif %}
+									{% endfor %}
+									{% endif %}
+									{% endfor %}
+								</tr>
+								<tr>
+								</tr>
+								<tr class="compare-row">
+									<td></td>
+									{% csrf_token %}
+									{% for product in comparison_list_products %}
+									{% for key, value in comparison_dict.items %}
+									{% if key == product.id %}
+									<form action="{% url 'delete_from_comparison_view' %}" method="POST">
+										{% csrf_token %}
+										<input type="hidden" name="product-id" value="{{ product.id }}">
+										<td colspan="{{ value }}"><button type="submit" class="btn btn-danger delete-from-comparison">Удалить</button></td>
+									</form>
+									{% endif %}
+									{% endfor %}
+									{% endfor %}
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

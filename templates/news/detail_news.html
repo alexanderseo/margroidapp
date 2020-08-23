@@ -1,0 +1,31 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Маргроид | Новость за {{ current_news_item.timestamp|date:'d-m-Y' }}{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		{% include 'widgets/left-info-menu.html' with start_width=4 caption_width=9 %}
+		<div class="col-xl-8 col-md-8" id="news-detailed-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<a href="{% url 'news_view' %}">Новости</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>{{ current_news_item.timestamp|date:'d-m-Y' }}</span>
+			</div>
+			<div class="main-content">
+				<h1>Новость за {{ current_news_item.timestamp|date:'d-m-Y' }}</h1>
+				<div class="container">
+					<div class="row">
+						<p>{{ current_news_item.content|safe }}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

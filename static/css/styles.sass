@@ -1,0 +1,1361 @@
+$mainColor: #36393b
+$bootstrapBlue: #5bc0de
+$navGray: #e8e8e8
+$linkColor: #2c7c94
+$grayBorder: #b5b5b5
+
+@font-face
+	font-family: Corbert-Regular
+	src: url("{% static 'font-awsome/fonts/Corbert-Regular.otf' %}") format("opentype")
+
+*
+	color: $mainColor
+
+@mixin sale
+	position: absolute
+	z-index: 1
+	overflow: hidden
+	width: 75px
+	height: 75px
+	text-align: right
+	& span
+		font-size: 12px
+		font-weight: bold
+		color: #FFF
+		text-transform: uppercase
+		text-align: center
+		line-height: 20px
+		transform: rotate(45deg)
+		-webkit-transform: rotate(45deg)
+		width: 100px
+		display: block
+		background: #79A70A
+		background: linear-gradient(#F70505 0%, #FF512E 100%)
+		box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1)
+		position: absolute
+		top: 19px
+		right: -21px
+		&::before
+			content: ""
+			position: absolute
+			left: 0px
+			top: 100%
+			z-index: -1
+			border-left: 3px solid #FF512E
+			border-right: 3px solid transparent
+			border-bottom: 3px solid transparent
+			border-top: 3px solid #FF512E
+		&::after
+			content: ""
+			position: absolute
+			right: 0px
+			top: 100%
+			z-index: -1
+			border-left: 3px solid transparent
+			border-right: 3px solid #FF512E
+			border-bottom: 3px solid transparent
+			border-top: 3px solid #FF512E
+
+@mixin nav-helper
+	border-bottom: 1px solid $grayBorder
+	margin-top: 40px
+	padding-bottom: 10px
+	font-size: 16px
+	& a
+		text-decoration: none
+		color: $linkColor
+
+
+.login-bg,
+#reg-bg
+	position: fixed
+	top: 0
+	left: 0
+	min-width: 100%
+	min-height: 100%
+	
+
+.login-body
+	& #div_id_password
+		margin-bottom: 0
+	& .error-message
+		display: inline-block
+		margin-bottom: 0
+	& #forgot-password
+		display: block
+		text-align: right
+		font-size: 12px
+		text-decoration: none
+	& .buttons-entry
+		margin-top: 10px
+
+
+.registration-body,
+.login-body
+	margin-top: 16vh
+	& h3
+		font-size: 26px
+		padding-top: 15px
+	& .pre-header
+		margin-top: 8vh
+		& img
+			margin-left: 45px
+		& span
+			color: white
+			font-size: 22px
+			padding-left: 10px
+	& form
+		margin-left: auto
+		margin-right: auto
+		padding: 0 30px 30px 30px
+		background-color: white
+		margin-top: 15px
+		border-radius: 8px
+		& .error-message strong
+			color: red
+		& input[name]
+			margin-top: 25px
+			padding-left: 30px
+		& .input-icon
+			position: absolute
+			margin-top: 10px
+			color: $mainColor
+		& .fa
+			font-size: 20px
+			padding: 7px
+			opacity: 0.8
+		& .fa-envelope
+			font-size: 17px
+		& .error-message
+			font-size: 13px
+			color: red
+			margin-top: -15px
+	& #regform-header
+		padding-top: 15px
+		font-size: 22px
+		line-height: 1
+		color: $mainColor
+	& #regform-footer
+		& p
+			color: $mainColor
+			font-size: 17px
+			margin-bottom: 5px
+	& .buttons-entry
+		& input:nth-child(2n)
+			float: right
+			align: center
+
+
+#main-carousel
+	margin-top: 40px
+	-webkit-box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.4)
+	-moz-box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.4)
+	box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.4)
+	& .carousel-item
+		padding-top: 30px
+		padding-bottom: 80px
+		& .carousel-caption a
+			text-decoration: none
+			font-size: 20px
+			&:hover
+				cursor: pointer
+				& p
+					color: black
+	& ol li:hover
+		cursor: pointer
+
+#top-navbar
+	background-color: $navGray !important
+	border-bottom: 1px solid $grayBorder
+	& li:not(:last-of-type)
+		margin-right: 20px
+	& a
+		text-decoration: none
+		color: $mainColor
+		font-size: 16px
+		&:hover
+			& i
+				color: $bootstrapBlue
+			color: $bootstrapBlue
+	& .dropdown
+		& .dropdown-menu
+			margin-top: 8px
+			left: -160%
+			& a:hover
+				color: black
+			& a:active
+				background-color: white !important
+
+#middle-navbar
+	padding: 15px 0 15px 0
+	overflow-x: hidden
+	& .phone-number
+		margin-top: 20px
+		font-size: 20px
+	& form
+		margin-top: 15px
+		& button
+			background-color: $bootstrapBlue
+
+#bottom-navbar
+	background-color: $navGray !important
+	border-top: 1px solid $grayBorder
+	border-bottom: 1px solid $grayBorder
+	color: $mainColor	
+	& a
+		color: $mainColor
+		&:hover
+			color: black
+	& .dropdown-menu a:active
+			background-color: white !important
+	& ul
+		font-size: 18px
+
+
+.filter-category-wrapper
+	margin-top: 40px
+	& .filter-item-wrapper
+		position: relative
+		& .ribbon
+			right: 7px
+			top: -5px
+			@include sale
+		& .filter-product-item
+			box-shadow: 0px 0px 0px 3px rgba(191,191,191,1)
+			margin-bottom: 50px
+			& img
+				padding: 20px 0 20px 0
+				display: block
+				margin-left: auto
+				margin-right: auto
+			& .new-price, .new-price i
+				color: #0bd440
+				text-align: center
+				font-size: 26px
+			& .filter-item-footer
+				padding: 0 20px 15px 20px
+				& .filter-product-price-nosale
+					font-size: 22px
+					float: right
+					& i
+						font-size: 22px
+				& .filter-product-price
+					font-size: 22px
+					float: right
+					color: #F70505
+					text-decoration: line-through
+					& i
+						font-size: 22px
+						color: #F70505
+				& .item-compare, .item-add-to-card
+					cursor: pointer
+					font-size: 22px
+					&:hover i
+						color: $bootstrapBlue
+				& .item-add-to-card
+					padding-left: 10px
+			& .filter-product-name
+				line-height: 1.1
+				font-size: 20px
+				padding: 0 15px 0 15px
+				& a
+					text-decoration: none
+					color: $linkColor
+
+
+#filter-product-menu
+	& .price-slider
+		border: 2px solid lightgray
+		border-top: none
+		margin: 0
+		text-align: center
+		position: relative
+	& .row 
+		& div
+			&:first-of-type
+				font-size: 20px
+				padding-top: 10px
+		& input
+			box-shadow: 0
+			outline: 0
+		& input[type="range"]
+			position: absolute
+			left: 0
+			bottom: 0
+			-webkit-appearance: none
+			width: 100%
+			padding-left: 15px
+			padding-right: 30px
+		& input[type="number"]
+			padding-left: 10px
+			border: none
+		& button:first-of-type
+			float: left
+			color: white
+			background-color: $bootstrapBlue
+		& a:last-of-type
+			float: right
+			background-color: lightgray
+			color: $mainColor
+			margin-right: 10px
+			margin-bottom: 20px
+
+
+.category-detail
+	position: relative
+	margin-bottom: 50px
+	margin-top: 35px
+	& h1
+		font-size: 28px
+		margin-bottom: 20px
+	& .category-detail-item
+		border: 2px solid $grayBorder
+		margin-bottom: 20px
+		& img
+			display: block
+			margin-left: auto
+			margin-right: auto
+			padding-top: 15px
+		& p
+			text-align: center
+			padding: 15px 10px 0 10px
+			& a
+				text-decoration: none
+				color: $linkColor
+
+.pagination
+	display: block
+	text-align: center
+	& li
+		font-size: 20px
+		display: inline-block
+		& a
+			text-decoration: none
+			color: $linkColor
+			& i
+				font-size: 16px
+	
+
+#search-container
+	& .search-item-wrapper
+		position: relative
+		& .ribbon
+			right: 7px
+			top: -5px
+			@include sale
+		& .search-product-item
+			box-shadow: 0px 0px 0px 3px rgba(191,191,191,1)
+			margin-bottom: 50px
+			& img
+				padding: 20px 0 20px 0
+				display: block
+				margin-left: auto
+				margin-right: auto
+			& .new-price, .new-price i
+				color: #0bd440
+				text-align: center
+				font-size: 26px
+			& .search-item-footer
+				padding: 0 20px 15px 20px
+				& .search-product-price-nosale
+					font-size: 22px
+					float: right
+					& i
+						font-size: 22px
+				& .search-product-price
+					font-size: 22px
+					float: right
+					color: #F70505
+					text-decoration: line-through
+					& i
+						font-size: 22px
+						color: #F70505
+				& .item-compare, .item-add-to-card
+					cursor: pointer
+					font-size: 22px
+					&:hover i
+						color: $bootstrapBlue
+				& .item-add-to-card
+					padding-left: 10px
+			& .search-product-name
+				line-height: 1.1
+				font-size: 20px
+				padding: 0 15px 0 15px
+				& a
+					text-decoration: none
+					color: $linkColor
+
+
+#new-goods-container
+	& h2
+		margin: 30px 0 30px 0
+	& .new-item-wrapper
+		position: relative
+		& .ribbon
+			right: 7px
+			top: -5px
+			@include sale
+		& .new-product-item
+			box-shadow: 0px 0px 0px 3px rgba(191,191,191,1)
+			margin-bottom: 50px
+			& img
+				padding: 20px 0 20px 0
+				display: block
+				margin-left: auto
+				margin-right: auto
+			& .new-price, .new-price i
+				color: #0bd440
+				text-align: center
+				font-size: 26px
+			& .new-item-footer
+				padding: 0 20px 15px 20px
+				& .new-product-price
+					font-size: 22px
+					float: right
+					color: #F70505
+					text-decoration: line-through
+					& i
+						font-size: 22px
+						color: #F70505
+				& .item-compare, .item-add-to-card
+					cursor: pointer
+					font-size: 22px
+					&:hover i
+						color: $bootstrapBlue
+				& .item-add-to-card
+					padding-left: 10px
+			& .new-product-name
+				line-height: 1.1
+				font-size: 16px
+				padding: 0 15px 0 15px
+				& a
+					text-decoration: none
+					color: $mainColor
+					&:hover
+						color: $bootstrapBlue
+
+
+#menu-watched-products-wrapper
+	& #menu-watched-products-content
+		& .watched-product-item
+			padding: 10px 10px 5px 10px		
+			border: 2px solid lightgray
+			border-top: none
+			& .pr-watched-name
+				text-decoration: none
+				color: $linkColor
+				font-size: 15px
+			& .pr-watched-price
+				font-size: 18px
+				padding-right: 5px
+				float: right
+
+
+#category-subcategory-detail
+	& .nav-helper
+		@include nav-helper
+	& h1
+		margin-top: 10px
+		border-bottom: 1px solid $grayBorder
+		padding-bottom: 15px
+	& .sort-products
+		border-bottom: 1px solid $grayBorder
+		padding-bottom: 20px
+		padding-top: 10px
+		font-size: 18px
+		& span
+			margin-left: 5px
+			cursor: pointer
+			& i:hover
+				color: $bootstrapBlue
+			&[is-active="true"]
+				& i
+					color: $bootstrapBlue
+
+
+#news-detailed-content
+	& .nav-helper
+		@include nav-helper
+
+#product-detail-wrapper
+	& #left-side-menu 
+		& .product-on-sale
+			text-align: center
+			& .row div:first-of-type
+				margin-left: auto
+				margin-right: auto
+			& .pr-sale-price, .sale-size
+				display: inline-block
+				position: relative
+				left: -22%
+	& #menu-watched-products-wrapper
+		& #menu-watched-products-content
+			& .watched-product-item
+				text-align: center
+				& .row div:first-of-type
+					margin-left: auto
+					margin-right: auto
+				& .pr-watched-price
+					display: inline-block
+					position: relative
+					left: -30%
+
+#product-detail-content
+	& .nav-helper
+		@include nav-helper
+	& .product-detail-item
+		margin-top: 20px
+		& .main-info
+			h2
+				font-size: 24px
+				padding-bottom: 20px
+				border-bottom: 1px solid $grayBorder
+			& .product-subinfo
+				padding-top: 15px
+				padding-bottom: 20px
+				border-bottom: 1px solid $grayBorder
+			& .product-price
+				font-size: 22px
+				& span:not(:first-of-type)
+					color: $bootstrapBlue
+					& i
+						color: $bootstrapBlue
+			& .product-size-text
+				padding-top: 20px
+				margin-bottom: 5px
+			& #accordion
+				margin-top: 15px
+				& .image-radio
+					cursor: pointer
+					box-sizing: border-box
+					-moz-box-sizing: border-box
+					-webkit-box-sizing: border-box
+					border: 4px solid transparent
+					margin-bottom: 0
+					outline: 0
+					& input[type="radio"]
+						display: none
+					& i
+						position: absolute
+						color: #4A79A3
+						background-color: #fff
+						padding: 10px
+						top: 0
+						right: 0
+				& .image-radio-checked
+					border-color: #4783B0
+					& i
+						display: block !important
+				& #headingOne
+					padding: 0
+					background-color: #f0f0f0
+					border-bottom: none
+					& button
+						text-decoration: none
+						color: $mainColor
+						font-weight: bold
+						& i
+							font-size: 18px
+							font-weight: bold
+							
+			& .complect-to-product
+				margin-top: 20px
+				& .complect-text
+					font-size: 18px
+				& table
+					& tbody tr:first-of-type
+						background-color: #f0f0f0
+					& .product-price
+						font-size: 16px
+					& input
+						width: 40px
+						border: 1px solid lightgray
+						text-align: center
+					& a
+						text-decoration: none
+						color: $linkColor
+			& .buttons-actions
+				margin-top: 20px
+				& button
+					font-size: 20px
+					background-color: $bootstrapBlue
+					color: white
+					box-shadow: none
+					& i
+						color: white
+			& .product-sizes
+				line-height: 3.3
+				& span
+					border: 1px solid lightgray
+					padding: 10px
+					cursor: pointer
+					&:hover
+						box-shadow: 0px 0px 14px 3px rgba(91,192,222,1)
+					&[is-active="true"]
+						box-shadow: 0px 0px 14px 3px rgba(91,192,222,1)
+		& .product-description
+			margin-top: 40px
+			& p:first-of-type
+				background-color: $bootstrapBlue
+				width: 100%
+				color: white
+				font-size: 20px
+				padding: 15px
+				font-weight: bold
+				margin-bottom: 0
+			& p:last-of-type
+				border: 1px solid lightgray
+				padding: 15px
+		& .image-wrapper
+			padding-left: 0
+			padding-right: 0
+			& div
+				border: 2px solid lightgray
+			& img
+				padding: 15px
+				width: 100%
+		& .comments-section
+			margin-top: 40px
+			margin-bottom: 40px
+			& .header
+				border: 1px solid lightgray
+				& p
+					width: 100%
+					color: white
+					font-size: 20px
+					padding: 15px
+					font-weight: bold
+					margin-bottom: 0				
+					background-color: $bootstrapBlue
+					width: 100%
+			& .row:not(:first-of-type)
+				& .comment-user, .comment-timestamp
+					margin-bottom: 10px
+					margin-top: 20px
+			& textarea
+				width: 100%
+				border-right: none
+				border-left: none
+				border-top: none
+				resize: none
+			& button
+				background-color: $bootstrapBlue
+				margin-top: 10px
+				float: right
+				margin-right: 10px
+				color: white
+				&[not-authenicated="true"]
+					cursor: not-allowed
+					box-shadow: none
+
+
+#compare-content
+	& .nav-helper
+		@include nav-helper
+	& .main-content
+		& .empty-state-wrapper
+			margin-top: 40px
+			margin-bottom: 50px
+		& .comparison
+			font-size: 12px
+			text-align: center
+			padding: 10px
+			& .compare-row
+				background: #F5F5F5
+				& a
+					text-decoration: none
+					color: $linkColor
+			& .comparison-row
+				overflow-x: scroll
+				margin-bottom: 40px
+				& table
+					border-top: 1px solid #CCC
+					border-left: 1px solid #CCC
+					width: 100%
+					border-collapse: collapse
+					border-spacing: 0
+					margin-bottom: 50px
+					margin-top: 20px
+					table-layout: fixed
+					border-bottom: 1px solid #CCC
+					min-width: 1120px
+					margin-bottom: 10px
+					& .price-info
+						padding: 5px 15px 15px 15px
+					& tr td:first-child
+						text-align: left
+					& th
+						font-weight: normal
+						padding: 0
+						border-bottom: 1px solid #CCC
+					& td, th
+						border-right: 1px solid #CCC
+						empty-cells: show
+						padding: 10px
+					& img
+						padding-top: 15px
+					& button
+						width: 100%
+						color: white
+						box-shadow: none
+
+
+#news-content
+	& .nav-helper
+		@include nav-helper
+	& .news-item
+		padding-top: 10px
+		border: 2px solid $grayBorder
+		& a
+			color: $linkColor
+			text-decoration: none
+		& p:first-of-type
+			font-weight: bold
+			font-size: 20px
+		& p:not(:last-of-type)
+			display: inline-block
+		& p:nth-child(2n)
+			float: right
+
+#news
+	& h2
+		margin-bottom: 30px
+		& a
+			color: $mainColor
+			text-decoration: none
+	& .news-item
+		box-shadow: 0px 0px 14px 1px rgba(0,0,0,0.4)
+		padding: 20px 20px 0 20px
+		& a
+			color: $linkColor
+			text-decoration: none
+		& p:first-of-type
+			font-weight: bold
+			font-size: 20px
+		& p:not(:last-of-type)
+			display: inline-block
+		& p:nth-child(2n)
+			float: right
+
+
+#contacts
+	& h2
+		margin-top: 30px
+	& i
+		font-size: 36px
+		color: $bootstrapBlue
+	& .contact-info
+		font-size: 18px
+		margin-top: 10px
+	& #contact-block
+		& #contact-form-right
+			padding-top: 15px
+			border: 2px solid lightgray
+			border-left: none
+			& p
+				font-size: 20px
+		& #djeymYMapsID
+			padding-left: 0
+		& textarea
+			resize: none
+			height: 150px
+
+
+#menu-on-sale-wrapper
+	position: relative
+	& .ribbon
+		right: -4px
+		top: -5px
+		@include sale
+
+#left-side-menu
+	margin-top: 10px
+	& .menu-header
+		margin-top: 30px
+		padding: 15px
+		color: white
+		font-size: 18px
+		margin-bottom: 0
+		font-weight: bold
+		background-color: $bootstrapBlue
+	& .list-group-item
+		color: $mainColor
+		line-height: 1.1
+		font-size: 18px
+		background-color: white
+	& .list-group-item[data-toggle="collapse"], .list-group-item[data-toggle="no-collapse"]
+		color: $mainColor
+		line-height: 1.1
+		font-size: 18px
+		font-weight: 450
+		background-color: white
+		&:hover
+			background-color: #f2f2f2
+	& .list-group-level1
+		& .list-group-item
+			padding-left: 40px
+			color: $mainColor
+			font-size: 16px
+			&:hover
+				background-color: #f2f2f2
+	& .product-on-sale
+		padding: 10px 10px 5px 10px		
+		border: 2px solid lightgray
+		border-top: none
+		& .pr-sale-name
+			text-decoration: none
+			color: $linkColor
+			font-size: 15px
+		& .sale-size
+			float: right
+			color: $linkColor
+		& .pr-sale-price
+			color: #0bd440
+			font-size: 18px
+			padding-right: 5px
+			float: right
+			& i
+				color: #0bd440
+	& .left-menu-bottom
+		border: 2px solid lightgray
+		border-top: none
+		padding: 20px
+		margin-bottom: 50px
+
+#search-content form button
+	background-color: $bootstrapBlue
+
+
+#price-list-content, #search-content
+	& .nav-helper
+		@include nav-helper
+	& .main-content
+		& h1
+			padding-top: 10px
+			font-size: 26px
+		& .pricelist-actions
+			margin-top: 15px
+			& .form-group
+				width: 200px
+				& .form-control
+					cursor: pointer
+					color: white
+					background-color: $bootstrapBlue
+					&:focus
+						box-shadow: none
+					& option
+						background-color: white
+			& .item-action, form
+				display: inline-block
+		& .pricelist-item
+			border: 1px solid lightgray
+			margin-bottom: 0px
+			padding: 10px 0 10px 0
+			border-radius: 5px
+			& a
+				color: $mainColor
+				text-decoration: none
+			&:hover
+				cursor: pointer
+				background-color: #f2f2f2
+			&:not(:last-of-type)
+				border-bottom: none
+
+
+#delivery-content
+	& .nav-helper
+		@include nav-helper
+	& .main-content
+		& h1
+			padding-top: 10px
+			font-size: 26px
+		& .row
+			margin-top: 40px
+			& .paragraph-item
+				font-weight: bold
+
+
+#cart-wrapper
+	& #profile-left-menu
+		margin-top: 100px
+		font-size: 18px
+		& ul
+			list-style-type: none
+			& li
+				margin-bottom: 20px
+				& a
+					text-decoration: none
+					color: $mainColor
+					&:hover
+						color: $bootstrapBlue
+						& i
+							color: $bootstrapBlue
+				&:last-of-type
+					& a, i
+						color: red
+					&:hover
+						& a,i
+							color: red
+			& li[is-active="true"]
+				& a, i
+					color: $bootstrapBlue
+	& #cart-content
+		margin-bottom: 100px
+		& .nav-helper
+			@include nav-helper
+		& #product-table
+			margin-top: 10px
+			& thead th
+				border: none
+				font-size: 18px
+			& tbody
+				& a
+					text-decoration: none
+					color: $linkColor
+				& .price-row, .result-price-row
+					background-color: #e8e8e8
+					& td
+						padding-top: 0
+						border: none
+				& .delivery-row
+					background-color: #e8e8e8 
+					& td
+						border-top: 1px solid lightgray
+				& .result-price-row td
+					border-bottom: 1px solid lightgray
+
+
+#compare-wrapper
+	& #profile-left-menu
+		margin-top: 100px
+		font-size: 18px
+		& ul
+			list-style-type: none
+			& li
+				margin-bottom: 20px
+				& a
+					text-decoration: none
+					color: $mainColor
+					&:hover
+						color: $bootstrapBlue
+						& i
+							color: $bootstrapBlue
+				&:last-of-type
+					& a, i
+						color: red
+					&:hover
+						& a,i
+							color: red
+			& li[is-active="true"]
+				& a, i
+					color: $bootstrapBlue
+
+#profile-wrapper
+	& #profile-left-menu
+		margin-top: 100px
+		font-size: 18px
+		& ul
+			list-style-type: none
+			& li
+				margin-bottom: 20px
+				& a
+					text-decoration: none
+					color: $mainColor
+					&:hover
+						color: $bootstrapBlue
+						& i
+							color: $bootstrapBlue
+				&:last-of-type
+					& a, i
+						color: red
+					&:hover
+						& a,i
+							color: red
+			& li[is-active="true"]
+				& a, i
+					color: $bootstrapBlue
+	& #profile-content
+		margin-bottom: 100px
+		& .nav-helper
+			@include nav-helper
+		& .main-content
+			& h1
+				padding-top: 10px
+				font-size: 28px
+			& p, ul
+				font-size: 16px
+			& .row
+				margin-top: 40px
+				& p
+					font-size: 20px
+					margin-bottom: 5px
+				& input
+					border: none
+					width: 100%
+					padding: 5px
+					font-size: 18px
+					&:focus
+						border: none
+						outline: none
+				& #save-profile-info
+					width: 120px
+				& .profile-email, .profile-phone, .profile-sale
+					margin-top: 20px
+				& div:not(:last-of-type)
+					border-bottom: 1px solid lightgray
+					padding-bottom: 30px
+				& div:last-of-type
+					margin-top: 20px
+					& button
+						color: white
+						box-shadow: none
+						&:last-of-type
+							background-color: $bootstrapBlue
+
+
+#showroom-content
+	margin-bottom: 100px
+	& .nav-helper
+		@include nav-helper
+	& .main-content
+		& h1
+			padding-top: 10px
+			font-size: 26px
+		& p, ul
+			font-size: 16px
+
+
+.mobile-bottom-nav
+	position: fixed
+	bottom: 0
+	left: 0
+	right: 0
+	z-index: 1000
+	will-change: transform
+	transform: translateZ(0)
+	display: flex
+	height: 50px
+	box-shadow: 0 -2px 5px -2px #333
+	background-color: #fff
+	& .mobile-bottom-nav__item
+		flex-grow: 1
+		text-align: center
+		font-size: 12px
+		display: flex
+		flex-direction: column
+		justify-content: center
+	& .mobile-bottom-nav__item--active
+		color: red
+	& .mobile-bottom-nav__item-content
+		display: flex
+		flex-direction: column
+		& i
+			font-size: 18px
+		& a
+			text-decoration: none
+			color: $mainColor
+			font-size: 12px
+			&:hover
+				color: $bootstrapBlue
+				& i
+					color: $bootstrapBlue
+
+
+#footer-container
+	background-color: #e8e8e8 !important
+	padding-top: 30px
+	& a
+		text-decoration: none
+		color: $mainColor
+		&:hover
+			color: $bootstrapBlue
+	& .footer-copyright
+		border-top: 1px solid $grayBorder
+
+@media only screen and (max-width: 1200px)
+	#middle-navbar .phone-number
+		font-size: 16px
+	#left-side-menu 
+		& .product-on-sale
+			text-align: center
+			& .pr-sale-price, .sale-size
+				display: inline-block
+				position: relative
+				left: -22%
+	#menu-watched-products-wrapper #menu-watched-products-content
+		& .watched-product-item
+			text-align: center
+			& .pr-watched-price
+				display: inline-block
+				position: relative
+				left: -33%
+	.bottom-images div:first-of-type img:first-of-type
+		margin-bottom: 20px
+	#menu-watched-products-wrapper 
+		& #menu-watched-products-content
+			& .watched-product-item
+				& .row div:first-of-type
+					text-align: center
+	#compare-content .main-content .comparison .comparison-row table
+		min-width: 700px
+
+
+@media only screen and (min-width: 768px) and (max-width: 991px)
+	#middle-navbar .phone-number:last-of-type
+		display: none
+	#news .news-item p:first-of-type,
+	#news .news-item p:nth-child(2n),
+	#news .news-item p:last-of-type
+		font-size: 14px
+	#left-side-menu
+		& .menu-header, .list-group-item[data-toggle="collapse"],
+		.list-group-level1 .list-group-item
+			font-size: 16px
+		& .left-menu-bottom
+			font-size: 14px
+		& #menu-on-sale-wrapper .product-on-sale .pr-sale-name
+			font-size: 10px
+			display: block
+			line-height: 1.6
+			margin-top: 10px
+			margin-bottom: -15px
+		& #menu-on-sale-wrapper .product-on-sale .pr-sale-price, 
+		#menu-on-sale-wrapper .product-on-sale .sale-size
+			display: inline-block
+			position: relative
+			left: -15%
+		#menu-watched-products-wrapper #menu-watched-products-content
+			& .pr-watched-price
+				display: inline-block
+				position: relative
+				left: -28%
+	#showroom-content 
+		& .nav-helper
+			font-size: 14px
+		& .main-content h1
+			font-size: 22px
+		& .main-content p, .main-content ul
+			font-size: 12px
+	#delivery-content p
+			font-size: 14px
+		& .nav-helper
+			font-size: 14px
+	#filter-product-menu .price-slider form
+		& div:first-of-type p
+			font-size: 18px
+		& button, a
+			font-size: 11px
+	#product-detail-wrapper
+		#left-side-menu
+			display: none
+	#compare-content .main-content .comparison .comparison-row table
+		min-width: 900px
+	// #profile-wrapper #profile-content
+	// 	& .main-content
+	// 		& .row
+	// 			& p
+	// 				font-size: 16px
+
+
+
+@media only screen and (max-width: 768px)
+	#middle-navbar #logo-block
+		margin-left: auto
+		margin-right: auto
+	#middle-navbar .phone-number
+		display: inline-block
+		margin-top: 0
+	#bottom-navbar ul li a,
+	#new-goods-container .new-product-item .new-product-name
+		font-size: 14px
+	#news .news-item
+		padding-bottom: 25px
+	#news .news-item p:nth-child(2n)
+		position: absolute
+		bottom: 0
+		padding-right: 20px
+		display: block
+		right: 0
+	#contacts #contact-block #contact-form-right
+		border: none
+	#left-side-menu
+		display: none
+	#delivery-content
+		margin-bottom: 50px 
+		& p
+			font-size: 14px
+	#price-list-content .main-content
+		& .pricelist-actions
+			font-size: 12px
+			& .form-group .form-control
+				font-size: 12px
+		& .pricelist-item
+			font-size: 12px
+	#news-content .main-content
+		& .news-item:last-of-type
+			margin-bottom: 40px
+		& .news-item .text-muted
+			display: none
+	#compare-content .main-content .comparison
+		& tbody tr:nth-child(odd)
+			display: table-row
+			background: #F7F7F7
+		& .row
+			background: #FFF
+		& table td, th
+			border: 1px solid #CCC
+		& table .price-info
+			border-top: 0 !important
+		& .comparison-row table
+			min-width: 900px
+
+
+@media only screen and (max-width: 575px)
+	#middle-navbar #logo-block
+		height: auto
+		width: auto
+	#middle-navbar form
+		margin: 15px 15px 0 15px
+		& input
+			font-size: 14px
+	#main-carousel
+		width: 90%
+		& .carousel-item .carousel-caption p
+			font-size: 14px
+	#new-goods-container .new-product-item .new-product-name
+		font-size: 16px
+	#news .news-item
+		margin: 0 10px 0 10px
+		& p
+			font-size: 13px
+		& p:first-of-type
+			font-size: 14px
+			text-align: center
+	#contacts #contact-changer .row:first-of-type
+		display: none
+	.registration-body, .login-body
+		& form
+			margin: 0 20px 0 20px
+			& input
+				font-size: 14px
+	#showroom-content
+		& .main-content p, .main-content ul
+			font-size: 12px
+	#delivery-content .main-content
+		& .delivery-item-info
+			width: 50%
+			margin-left: auto
+			margin-right: auto
+		& .paragraph-item
+			& p
+				text-align: center
+				font-size: 14px
+
+
+@media only screen and (max-width: 576px)
+	#top-navbar a
+		font-size: 14px
+	#product-detail-content
+		& .product-detail-item
+			& .comments-section
+				& .row:not(:first-of-type)
+					& .comment-user-wrapper, .comment-timestamp-wrapper
+						display: inline
+						width: 50%
+						font-size: 14px
+
+
+@media only screen and (max-width: 490px)
+	#bottom-navbar ul li a
+		font-size: 12px
+	#news-content .main-content .news-item
+		& p:first-of-type
+			font-size: 16px
+		& p:last-of-type
+			font-size: 14px
+	#compare-content .main-content .comparison .comparison-row 
+		& table
+			font-size: 10px
+			min-width: 700px
+			& button
+				font-size: 10px
+		& img
+			height: 100px
+
+
+@media only screen and (max-width: 435px)
+	#price-list-content .pricelist-actions 
+		& #pricelist-form .form-group
+			width: 100%
+		& .item-action:not(:first-of-type)
+			margin-bottom: 15px
+	#search-content #search-form
+		& input
+			font-size: 14px
+		& select
+			font-size: 12px
+
+
+@media only screen and (max-width: 420px)
+	#top-navbar
+		display: none
+	#middle-navbar
+		margin-top: 30px 
+		& #logo-block
+			margin-top: 0
+		& form input
+			font-size: 12px
+	#bottom-navbar
+		position: absolute
+		top: 0
+		width: 100%
+		& .navbar-toggler span
+			height: 20px
+	.registration-body, .login-body
+		& h3
+			font-size: 20px 
+		& form input
+			font-size: 12px
+	#product-detail-wrapper .product-detail-item 
+		& .main-info 
+			& h2
+				font-size: 20px
+			& .buttons-actions
+				& button
+					font-size: 14px
+					&:last-of-type
+						margin-top: 10px
+	#product-detail-wrapper .main-content .product-detail-item 
+		& .complect-to-product
+			& table
+				& th, td
+					font-size: 12px
+				& .product-price
+					font-size: 10px
+		& h2
+			margin-top: 15px
+		& .product-description
+			& p:first-of-type
+				font-size: 14px
+		& .comments-section p
+			font-size: 14px
+
+
+@media only screen and (min-width: 421px)
+	.mobile-bottom-nav
+		display: none
+	.navbar-expand-custom 
+		flex-direction: row
+		flex-wrap: nowrap
+		justify-content: flex-start
+		& .navbar-nav 
+			flex-direction: row
+			& .nav-link
+				padding-right: .5rem
+				padding-left: .5rem
+		& .navbar-collapse 
+			display: flex !important
+		& .navbar-toggler 
+			display: none
+		& .dropdown-menu
+			position: absolute

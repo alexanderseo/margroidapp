@@ -1,0 +1,190 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if current_product.title %}
+    {{ current_product.title }}
+    {% else %}
+    {{ current_product.name|lower|capfirst }} | Маргроид
+    {% endif %}
+{% endblock title %}
+{% block META_description %}
+    {% spaceless %}
+        {% if current_product.description %}
+            {{ current_product.description }}
+        {% else %}
+            {{ current_product.name|lower|capfirst }}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+<meta name="description" content="{% if title == 'Хиты продаж' %}Хиты продаж{% elif title == 'Новинки' %}Новинки{% elif title == 'Каталог' %}Каталог товаров в интернет-магазине Sport4Life{% else %}{{ compilation.title }}{% endif %}">
+
+{% block content %}
+
+<div class="container">
+	<div class="row" id="product-detail-wrapper">
+		{% include 'widgets/left-info-menu.html' with start_width=3 caption_width=12 %}
+		<div class="col-lg-9 col-sm-12" id="product-detail-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				{% if current_product.category.name == 'Комплектующие' %}
+				<a href="{% url 'components_view' %}">{{ current_product.category.name }}</a>
+				{% else %}
+				<a href="{% url 'category_detail_view' current_product.category.slug %}">{{ current_product.category.name }}</a>
+				{% endif %}
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				{% if current_product.sub_category %}
+				<a href="{% url 'subcategory_detail_view' current_product.category.slug current_product.sub_category.slug %}">{{ current_product.sub_category.name }}</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				{% endif %}
+				<span>{{ current_product.name }}</span>
+			</div>
+			<div class="main-content">
+				<div class="container">
+					<div class="row product-detail-item">
+						<div class="col-md-4 col-sm-4 image-wrapper">
+							<div>
+								<img src="{{ current_product.image.url }}" alt="{{ current_product.name }}">
+							</div>
+						</div>
+						<div class="col-md-8 col-sm-8 main-info">
+							<h1 style="font-size:24px; padding-bottom:20px; border-bottom: 1px solid #b5b5b5;">{{ current_product.name|upper }}</h1>
+							<p class="product-subinfo">
+								{{ current_product.vendor_code }}<br>
+								В НАЛИЧИИ: {{ current_product.in_stock }} ШТ.
+							</p>
+							<div class="product-price">
+								<span>ЦЕНА: </span>
+								<span class="product-price-value">{{ current_product.new_price }}</span>
+								<span>₽</span>
+							</div>
+							{% if current_product.category.name != 'Комплектующие' %}
+							<p class="product-size-text"><b>РАЗМЕР:</b></p>
+							<p class="product-sizes">
+								{% for size in current_product_sizes %}
+								{% if forloop.first %}
+								<span product-size-id="{{ size.id }}" is-active="true" price-value="{% if current_product.on_sale == True %}{{ size.saleprice }}{% else %}{{ size.price }}{% endif %}">{{ size.height }}*{{ size.width }}</span>
+								{% else %}
+								<span product-size-id="{{ size.id }}" price-value="{% if current_product.on_sale == True %}{{ size.saleprice }}{% else %}{{ size.price }}{% endif %}">{{ size.height }}*{{ size.width }}</span>
+								{% endif %}
+								{% endfor %}
+							</p>
+							{% endif %}
+							{% if colors %}
+							<div id="accordion">
+								<div class="card">
+									<div class="" id="headingOne">
+										<h5 class="mb-0">
+											<button class="btn btn-link" id="choose-color-spoiler">Выбрать цвет (необязательно)</button>
+										</h5>
+									</div>
+									<div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordion">
+										<div class="card-body row">
+											{% for color in min_colors %}
+											<div class="col-xl-6">
+												<label product-size-id="{{ color.id }}" class="image-radio" prev-price="{% if current_product.on_sale == True %}{{ color.product.saleprice }}{% else %}{{ color.product.price }}{% endif %}" color-price="{% if current_product.on_sale == True %}{{ color.saleprice }}{% else %}{{ color.price }}{% endif %}">
+													<img alt="{{ color.color.name }}" src="{{ color.color.image.url }}" class="img-fluid">
+													<input type="radio" name="image-radio-input">
+													<i class="fa fa-check" style="display: none;" aria-hidden="true"></i>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endif %}
+							{% if current_product.complect.all %}
+							<div class="complect-to-product">
+								<p class="complect-text"><b>КОМПЛЕКТУЮЩИЕ К ТОВАРУ:</b></p>
+								<table class="table table-bordered" cellpadding="0" cellspacing="0">
+									<tbody>
+										<tr>
+											<th class="text-center" width="5%">Фото</th>
+											<th width="65%">Название товара</th>
+											<th class="text-center" width="20%">Цена</th>
+											<th class="text-center" width="10%">Кол-во</th>
+										</tr>
+										{% for complect in current_product.complect.all %}
+										<tr>
+											<td class="text-center"><a href="{% url 'product_detail_view' complect.id %}"><img alt="{{ complect.name }}" src="{{ complect.image.url }}" height="30px"></a></td>
+											<td class="product-name"><a href="{% url 'product_detail_view' complect.id %}">{{ complect.name }}</a></td>
+											<td class="text-center product-price">{{ complect.new_price }}</td>
+											<td class="text-center"><input type="number" complect-id="{{ complect.id }}" class="complect-count complect-count-id-{{ complect.id }}" value="0" min="0"></td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+								<div align="right">
+									<button class="btn add-complect-to-cart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> В корзину</button>
+								</div>
+							</div>
+							{% endif %}
+							<div class="row buttons-actions">
+								<div class="col-sm-6">
+									<button style="width: 100%;" class="btn item-add-to-card" product-id="{{ current_product_sizes.0.id }}"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i> В корзину</button>
+								</div>
+								<div class="col-sm-6">
+									<button style="width: 100%;" items-compare="{{ comparison_list }}" product-id="{{ current_product.id }}" class="btn item-compare"><i class="fa fa-files-o" aria-hidden="true"></i> Сравнить</button>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-12 product-description">
+							<div class="row">
+								<p>Описание</p>
+								{% if "СТАНДАРТ" in current_product.sub_category.name %}
+								{% include 'complect_standart.html' %}
+								{% endif %}
+								{% if "ПРОФИЛЬНЫЕ" in current_product.sub_category.name %}
+								{% include 'complect_profile.html' %}
+								{% endif %}
+								{% if "ПОЛКОЙ" in current_product.sub_category.name %}
+								{% include 'complect_shelter.html' %}
+								{% endif %}
+								{% if "с боковым подключением" in current_product.sub_category.name %}
+								{% include 'complect_side.html' %}
+								{% endif %}
+							</div>
+						</div>
+						<div class="col-xl-12 comments-section">
+							<div class="row header">
+								<p>Комментарии (0)</p>
+								<form method="POST" action="{% url 'add_comment_view' current_product.id %}" class="form-group">
+									{% csrf_token %}
+									<textarea placeholder="Оставьте свой комментарий...." class="form-control" name="comment" cols="100" rows="4" required></textarea>
+									{% if request.user.is_authenticated %}
+									<button class="btn" type="submit">Отправить</button>
+									{% else %}
+									<button class="btn" not-authenicated="true" type="button">Отправить</button>
+									{% endif %}
+								</form>
+							</div>
+							{% for comment in comments %}
+							<div class="row">
+								<div class="col-sm-3 comment-user-wrapper">
+									<p class="comment-user">@{{ comment.user.user.username }}</p>
+								</div>
+								<div align="right" class="col-sm-9 comment-timestamp-wrapper">
+									<p class="comment-timestamp text-muted">{{ comment.created_on|date:'d-m-Y' }}</p>
+								</div>
+								<div class="col-sm-12">
+									<p class="comment-body">{{ comment.body }}</p>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var add_to_cart_url = "{% url 'add_to_cart_view' %}";
+	var add_complect_to_cart = "{% url 'add_complect_to_cart_view' %}";
+	var select_product_color_url = "{% url 'select_product_color_view' %}";
+</script>
+
+{% endblock content %}

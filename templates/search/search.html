@@ -1,0 +1,120 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Маргроид | Результаты поиска{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		{% include 'widgets/left-info-menu.html' with start_width=4 caption_width=9 %}
+		<div class="col-xl-8 col-md-8" id="search-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Поиск</span>
+			</div>
+			<div class="main-content" style="position: relative; margin-bottom: 50px;">
+				<h1>Результаты поиска по запросу: <i>{{ query }}. Найдено: {{ founded_products.paginator.count }}</i>.</h1>
+
+				<div class="row">
+					<form style="margin-top: 20px;" id="search-form" class="col-sm-12" method="GET" action="{% url 'search_view' %}">
+						<div class="input-group">
+							<input class="form-control py-2" placeholder="Поиск по каталогу" name="q" value="{{ query }}">
+							<input type="hidden" name="category" value="{{ selected_category_filter }}">
+							<span class="input-group-append">
+								<button class="btn" type="submit">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+						<select style="margin-top: 10px; margin-bottom: 30px;"  class="col-lg-4 col-sm-6 form-control" id="search-category-select">
+							<option>Все категории</option>
+							{% for category in categories %}
+							{% if category.subtype.all %}
+							{% for subcategory in category.subtype.all %}
+							<option>{{ category.name }} / {{ subcategory.name }}</option>
+							{% endfor %}
+							{% else %}
+							<option>{{ category.name }}</option>
+							{% endif %}
+							{% endfor %}
+						</select>
+					</form>
+				</div>
+
+				<div id="search-container">
+					<div class="row">
+						{% for product in founded_products %}
+						<div class="search-item-wrapper col-xl-6 col-lg-6 col-md-6 col-sm-6">
+							{% if product.on_sale %}
+							<div class="ribbon"><span>{{ product.sale }}% SALE</span></div>
+							{% endif %}
+							<div class="search-product-item">
+								<a href="{% url 'product_detail_view' product.id %}"><img src="{{ product.image.url }}" height="200"></a>
+								<p align="center" class="search-product-name"><a href="{% url 'product_detail_view' product.id %}">{{ product.name }}</a></p>
+								{% if product.on_sale %}
+								<p class="new-price">{{ product.new_price }}</p>
+								{% else %}
+								<p class="new-price" style="visibility: hidden;">1</p>
+								{% endif %}
+								<div class="search-item-footer">
+									{% if product.on_sale %}
+									<span class="search-product-price">
+										{{ product.new_price }}
+									</span>
+									{% else %}
+									<span class="search-product-price-nosale">
+										{{ product.price }}
+									</span>
+									{% endif %}
+									<span data-toggle="tooltip" data-placement="top" title="Сравнить" class="item-compare" items-compare="{{ comparison_list }}" product-id="{{ product.id }}"><i class="fa fa-files-o" aria-hidden="true"></i></span>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				{% if founded_products.paginator.num_pages > 1 %}
+				<ul class="pagination">
+					{% if founded_products.has_previous %}
+					<li><a href="?page={{ founded_products.previous_page_number }}&{{ parameters }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></a></li>
+					{% else %}
+					<li class="disabled"><span><i class="fa fa-chevron-left" aria-hidden="true"></i></span></li>
+					{% endif %}
+
+					{% if founded_products.number|add:'-4' > 1 %}
+					<li><a href="?page={{ founded_products.number|add:'-5' }}&{{ parameters }}">&hellip;</a></li>
+					{% endif %}
+
+					{% for i in founded_products.paginator.page_range %}
+					{% if founded_products.number == i %}
+					<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+					{% elif i > founded_products.number|add:'-5' and i < founded_products.number|add:'5' %}
+					<li><a href="?page={{ i }}&{{ parameters }}">{{ i }}</a></li>
+					{% endif %}
+					{% endfor %}
+
+					{% if founded_products.paginator.num_pages > founded_products.number|add:'4' %}
+					<li><a href="?page={{ founded_products.number|add:'5' }}&{{ parameters }}">&hellip;</a></li>
+					{% endif %}
+
+					{% if founded_products.has_next %}
+					<li><a href="?page={{ founded_products.next_page_number }}&{{ parameters }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></li>
+					{% else %}
+					<li class="disabled"><span><i class="fa fa-chevron-right" aria-hidden="true"></i></span></li>
+					{% endif %}
+				</ul>
+				{% endif %}
+
+			</div>			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	document.getElementById('search-category-select').value = "{{ selected_category_filter }}";
+</script>
+
+{% endblock content %}

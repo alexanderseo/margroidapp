@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% load header_tags %}
+{% load static %}
+<html>
+<head>
+    <title>{% block title %}Главная страница{% endblock title %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="{% block META_description %}{{ meta.description }}{% endblock %}"/>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<link rel="shortcut icon" href="{% static 'img/favicon.jpeg' %}">
+	<script src='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.js'></script>
+	<link href='https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css' rel='stylesheet'/>
+</head>
+<body >
+
+	<nav class="mobile-bottom-nav">
+		<div class="mobile-bottom-nav__item mobile-bottom-nav__item--active">
+			<div class="mobile-bottom-nav__item-content">
+				<a href=""><i class="fa fa-files-o" aria-hidden="true"></i></a>
+				<a href="" class="compare-products">Сравнение <span class="badge badge-secondary"></span></a>
+			</div>
+		</div>
+		<div class="mobile-bottom-nav__item">
+			<div class="mobile-bottom-nav__item-content">
+				<a href=""><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+				<a href="">Корзина <span class="badge badge-secondary" id="cart-total-mobile"></span></a>
+			</div>
+		</div>
+		{% if request.user.is_authenticated %}
+		<div class="mobile-bottom-nav__item">
+			<div class="mobile-bottom-nav__item-content">
+				<a href=""><i class="fa fa-user" aria-hidden="true"></i></a>
+				<a href="">Профиль</a>
+			</div>
+		</div>
+		{% else %}
+		<div class="mobile-bottom-nav__item">
+			<div class="mobile-bottom-nav__item-content">
+				<a href=""><i class="fa fa-sign-in" aria-hidden="true"></i></a>
+				<a href="">Войти</a>
+			</div>
+		</div>
+		{% endif %}
+	</nav>
+
+	<nav class="navbar navbar-expand navbar-light" id="top-navbar">
+		<div class="container">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a href="" class="compare-products"><i class="fa fa-files-o" aria-hidden="true"></i> Сравнение <span class="badge badge-secondary"></span></a>
+				</li>
+				<li class="nav-item">
+					<a href="" class="cart-products"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Корзина <span class="badge badge-secondary"></span></a>
+				</li>
+
+				<li class="nav-item dropdown">
+					<a style="padding: 0;" class="nav-link" href="#" id="profile-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-user" aria-hidden="true"></i> Профиль
+					</a>
+					<div class="dropdown-menu" aria-labelledby="profile-dropdown">
+						<a class="dropdown-item" href="">Персональные данные</a>
+						<a class="dropdown-item" href="">Мои заказы</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="">Выход</a>
+					</div>
+				</li>
+
+				<li class="nav-item">
+					<a href=""><i class="fa fa-sign-in" aria-hidden="true"></i> Войти</a>
+				</li>
+
+			</ul>
+		</div>
+	</nav>
+
+	<nav>
+		<div class="container" id="middle-navbar">
+			<div class="row" id="info-navbar">
+                    {% header_elements %}
+				<form class="col-xl-4 col-lg-4 col-md-5" method="GET" action="">
+					<div class="input-group">
+						<input class="form-control py-2" placeholder="Поиск по каталогу" name="q">
+						<span class="input-group-append">
+							<button class="btn" type="submit">
+								<i class="fa fa-search"></i>
+							</button>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+    <style>
+	    #bottom-navbar ul li a:hover {
+	        color: #5bc0de;
+	    }
+	</style>
+
+	<nav class="navbar navbar-expand-custom navbar-light" id="bottom-navbar">
+		<div class="container">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar10">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="navbar-collapse collapse" id="navbar10">
+				<ul class="navbar-nav nav-fill w-100">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Все товары
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+							<a class="dropdown-item" href=""></a>
+
+							<a class="dropdown-item" href=""></a>
+
+
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="">Show Room</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="">Доставка</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/#contacts">Контакты</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="page-footer font-small blue-grey lighten-5" id="footer-container">
+	<div class="container text-center text-md-left">
+		<div class="row dark-grey-text">
+			<div class="col-md-4 col-lg-4">
+				<h6 class="text-uppercase font-weight-bold">Товары</h6><hr>
+
+				<p>
+					<a class="dark-grey-text" href=""></a>
+				</p>
+
+				<p>
+					<a class="dark-grey-text" href=""></a>
+				</p>
+
+			</div>
+			<div class="col-md-4 col-lg-4">
+				<h6 class="text-uppercase font-weight-bold">Полезные ссылки</h6><hr>
+				<p>
+					<a class="dark-grey-text" href="">Личный кабинет</a>
+				</p>
+				<p>
+					<a class="dark-grey-text" href="">Прайс-лист</a>
+				</p>
+				<p>
+					<a class="dark-grey-text" href="">Наш Show Room</a>
+				</p>
+				<p>
+					<a class="dark-grey-text" href="">Доставка</a>
+				</p>
+			</div>
+			<div class="col-md-4 col-lg-4">
+				<h6 class="text-uppercase font-weight-bold">Контакты</h6><hr>
+				<p><i class="fa fa-map-marker" aria-hidden="true"></i> Западная улица, стр 100 рабочий посёлок Новоивановское, Одинцовский городской округ (2 этаж, павильон B-71).</p>
+				<p><i class="fa fa-envelope" aria-hidden="true"></i> Margroid@mai.ru</p>
+				<p><i class="fa fa-phone"></i> 8 (977) 873-01-77</p>
+				<p><i class="fa fa-phone"></i> 8 (916) 283-01-77</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="footer-copyright text-center text-black-50 py-3">
+		<p>© TD VELS 2020</p>
+	</div>
+</footer>
+
+<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-validate.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/flash.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/masked-input.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+<script type="text/javascript">
+	var add_to_comparison_url = "";
+	var send_feedback_url = "";
+</script>
+
+</body>
+</html>

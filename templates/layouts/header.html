@@ -1,0 +1,7 @@
+{% for header in header_elem %}
+<div class="col-xl-4 col-lg-4 col-md-4 col-sm-7" id="logo-block">
+    <a href=""><img alt="{{ header.alt_logo_header }}" src="{{ header.header_logo.url }}" class="img-fluid"></a>
+</div>
+<div style="padding: 0;" align="center" class="col-xl-2 col-lg-2 col-md-3 col-sm-6 phone-number"><b>{{ header.phone_one }}</b></div>
+<div style="padding: 0;" align="center" class="col-xl-2 col-lg-2 col-md-3 col-sm-6 phone-number"><b>{{ header.phone_two }}</b></div>
+{% endfor %}
