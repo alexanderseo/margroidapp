@@ -137,56 +137,6 @@ def find_extremum_prices(products):
     return (min(all_prices), max(all_prices))
 
 
-def add_comment_view(request, product_id):
-    """
-    Добавление комментария к товару
-    """
-    current_product = Product.objects.get(id=product_id)
-    comment_text = request.POST.get('comment')
-    current_user = ShopUser.objects.get(user=request.user)
-    Comment.objects.create(product=current_product, user=current_user, body=comment_text)
-    return HttpResponseRedirect(reverse('product_detail_view', kwargs={'product_id': product_id}))
-
-
-def increase_product_count_view(request):
-    """
-    Увеличение количество товара в корзине
-    """
-    cart, cart_objects_count = get_users_cart(request)
-    cart_item_id = request.GET.get('item-id')
-    cart_item = cart.products.get(id=cart_item_id)
-    cart_item.count += 1
-    if cart_item.color:
-        cart_item.total_price += cart_item.price_per_item_color
-        cart.total_price += cart_item.price_per_item_color
-    else:
-        cart_item.total_price += cart_item.product.price
-        cart.total_price += cart_item.product.price
-    cart_item.save()
-    cart.save()
-    return HttpResponseRedirect(reverse('cart_view'))
-
-
-def decrease_product_count_view(request):
-    """
-    Уменьшение количество товара в корзине
-    """
-    cart, cart_objects_count = get_users_cart(request)
-    cart_item_id = request.GET.get('item-id')
-    cart_item = cart.products.get(id=cart_item_id)
-    if cart_item.count != 1:
-        cart_item.count -= 1
-        if cart_item.color:
-            cart_item.total_price -= cart_item.price_per_item_color
-            cart.total_price -= cart_item.price_per_item_color
-        else:
-            cart_item.total_price -= cart_item.product.price
-            cart.total_price -= cart_item.product.price
-        cart_item.save()
-        cart.save()
-    return HttpResponseRedirect(reverse('cart_view'))
-
-
 def remove_from_cart_view(request):
     """
     Очистить корзину
@@ -197,22 +147,3 @@ def remove_from_cart_view(request):
     cart.remove_from_cart(product)
     return HttpResponseRedirect(reverse('cart_view'))
 
-
-def select_product_color_view(request):
-    """
-    Что-то с цветом
-    """
-    product_size_id = request.POST.get('product_size_id')
-    product_size = Sizes.objects.get(id=product_size_id)
-    product_colors_sizes = ProductColorsSizes.objects.filter(product=product_size)
-    result_sizes = defaultdict()
-    for color_size in product_colors_sizes:
-        lst = []
-        lst.append(color_size.color.image.url)
-        lst.append(color_size.product.height)
-        lst.append(color_size.product.width)
-        lst.append(color_size.price)
-        lst.append(color_size.product.price)
-        lst.append(color_size.id)
-        result_sizes[color_size.id] = lst
-    return JsonResponse({'colors': result_sizes})

@@ -1,6 +1,10 @@
 from django.shortcuts import render
 from django.views.generic.base import View
+from auth.forms import ContactForm
 from home.models import SeoHomePage
+from product.models import Product, Category
+from news.models import News
+from utils.functions_products_cart import get_users_cart
 
 
 class HomePage(View):
@@ -15,7 +19,6 @@ class HomePage(View):
         compare_list = request.session.get('comparison_list', 0)
         compare_list_count = len(compare_list) if compare_list else 0
         cart, cart_objects_count = get_users_cart(request)
-        meta_info = Pages.objects.get(related_page='Главная')
         seo = SeoHomePage.objects.first()
         context = {
             'categories': product_categories,
@@ -24,8 +27,6 @@ class HomePage(View):
             'contact_form': contact_form,
             'comparison_list': compare_list_count,
             'cart_items_count': cart_objects_count,
-            'main_title': meta_info.meta_title,
-            'main_description': meta_info.meta_description,
             'seo': seo,
         }
         return render(request, 'home/index.html', context)

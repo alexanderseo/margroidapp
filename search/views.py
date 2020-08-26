@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from utils.functions_products_cart import get_watched_products, set_paginator, get_prev_paginator_page, get_next_paginator_page, get_GET_params
+from utils.functions_products_cart import *
 from product.models import *
 
 

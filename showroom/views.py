@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from utils.functions_products_cart import get_watched_products
+from utils.functions_products_cart import get_watched_products, get_users_cart
 from product.models import Product, Category
 from showroom.models import ShowRoomModel
 

@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from auth.models import ShopUser
 
 
 class CategoryChild(models.Model):

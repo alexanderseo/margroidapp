@@ -1,0 +1,61 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>TDVELS | Регистрация</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+	<link rel="shortcut icon" href="{% static 'img/tdvels_icon.png' %}">
+</head>
+<body class="registration-body">
+
+	<img id="reg-bg" src="{% static 'img/reg_background.jpg' %}">
+
+	{% block content %}
+	<div class="container">
+		<div class="row">
+			<form class="col-xl-6 col-lg-7 col-md-8" action="{% url 'registration_view' %}" method="POST">
+				{% csrf_token %}
+				<h3 align="center">Новый аккаунт</h3>
+				<hr>
+				<a class="fa fa-envelope input-icon"></a>
+				{{ form.email|as_crispy_field }}
+				{% for key, value in form.errors.items %}
+				{% if "email" in value|striptags %}
+				<p class="error-message"><strong>Почтовый ящик уже используется.</strong></p>
+				{% endif %}
+				{% endfor %}
+				<a class="fa fa-user input-icon"></a>
+				{{ form.username|as_crispy_field }}
+				{% for key, value in form.errors.items %}
+				{% if "username" in value|striptags %}
+				<p class="error-message"><strong>Данный логин уже используется.</strong></p>
+				{% endif %}
+				{% endfor %}
+				<a class="fa fa-lock input-icon"></a>
+				{{ form.password|as_crispy_field }}
+				<a class="fa fa-lock input-icon"></a>
+				{{ form.password_check|as_crispy_field }}
+				{% for key, value in form.errors.items %}
+				{% if "Passwords" in value|striptags %}
+				<p class="error-message"><strong>Пароли не совпадают.</strong></p>
+				{% endif %}
+				{% endfor %}
+				<div class="buttons-entry">
+					<a href="{% url 'login_view' %}"><input type="button" class="btn btn-info" value="Войти" /></a>
+					<input type="submit" class="btn btn-success" value="Зарегистрироваться" />
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endblock content %}
+
+	<script type="text/javascript" src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
+
+</body>
+</html>

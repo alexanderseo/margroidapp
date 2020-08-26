@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from news.models import News
 from product.models import Product, Category
-from utils.functions_products_cart import get_watched_products
+from utils.functions_products_cart import get_watched_products, get_users_cart
 
 
 class NewsPage(View):

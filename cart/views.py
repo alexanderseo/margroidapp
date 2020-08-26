@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.views.generic.base import View
-from django.http import JsonResponse
-
+from django.http import JsonResponse, HttpResponseRedirect
+from auth.models import ShopUser
+from product.models import Product, Category, Sizes
 
 class CartAdd(View):
     """
@@ -77,3 +78,15 @@ class ComplectToCart(View):
             complect_item_clear = Sizes.objects.get(product=complect_item)
             cart.add_to_cart(complect_item_clear, default_count=complect_item_count)
         return JsonResponse({'total': len(cart.products.all())})
+
+
+class RemoveFromCartView(View):
+    """
+    Очистить корзину
+    """
+    def get(self, request):
+        cart, cart_objects_count = get_users_cart(request)
+        product_id = request.GET.get('cart-item')
+        product = Sizes.objects.get(id=product_id)
+        cart.remove_from_cart(product)
+        return HttpResponseRedirect(reverse('cart:cart_view'))

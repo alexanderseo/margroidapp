@@ -20,8 +20,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('auth/', include('auth.urls', namespace='auth')),
     path('catalog/', include('product.urls', namespace='product')),
+    path('cart/', include('cart.urls', namespace='cart')),
+    path('components/', include('components.urls', namespace='components')),
     path('news/', include('news.urls', namespace='news')),
+    path('price-list/', include('pricelist.urls', namespace='pricelist')),
     path('search/', include('search.urls', namespace='search')),
     path('showroom/', include('showroom.urls', namespace='showroom')),
     path('', include('home.urls', namespace='home')),

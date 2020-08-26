@@ -4,8 +4,8 @@ from django.urls import reverse
 
 class News(models.Model):
     name = models.CharField(max_length=200,
-                             help_text='длина до 200 символов',
-                             verbose_name='Заголовок статьи')
+                            help_text='длина до 200 символов',
+                            verbose_name='Заголовок статьи')
     titleseo = models.CharField(max_length=200,
                                 blank=True,
                                 null=True,

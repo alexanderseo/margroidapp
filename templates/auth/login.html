@@ -1,0 +1,45 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>TDVELS | Вход</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+	<link rel="shortcut icon" href="{% static 'img/tdvels_icon.png' %}">
+</head>
+<body class="login-body">
+
+	<img class="login-bg" src="{% static 'img/log_background.jpg' %}">
+
+	{% block content %}
+	<div class="container">
+		<div class="row">
+			<form class="col-xl-6 col-lg-7 col-md-8" action="{% url 'login_view' %}" method="POST">
+				{% csrf_token %}
+				<h3 align="center">Войти на tdvels.ru</h3>
+				<hr>
+				<a class="fa fa-user input-icon"></a>
+				{{ form.username|as_crispy_field }}
+				<a class="fa fa-lock input-icon"></a>
+				{{ form.password|as_crispy_field }}
+				{% for key, value in form.errors.items %}
+				{% if "Invalid password" or "username" in value|striptags %}
+				<p class="error-message"><strong>Неверный логин или пароль.</strong></p>
+				{% endif %}
+				{% endfor %}
+				<a href="{% url 'password_reset' %}" id="forgot-password">Забыли пароль?</a>
+				<div class="buttons-entry">
+					<a href="{% url 'registration_view' %}"><input type="button" class="btn btn-info" value="Регистрация" /></a>
+					<input type="submit" class="btn btn-success" value="Войти" />
+				</div>
+			</form>
+		</div>
+	</div>
+	{% endblock content %}
+
+</body>
+</html>

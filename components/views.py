@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import View
+from product.models import Category, Product
+from utils.functions_products_cart import *
 
 
 class ComponentsPage(View):
