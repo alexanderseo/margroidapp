@@ -1,8 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic.base import View
-from collections import deque, defaultdict
-from product.models import *
 import collections
+from collections import deque, defaultdict
+from django.shortcuts import render
+from django.views.generic.base import View
 from utils.functions_products_cart import *
 
 
@@ -163,7 +162,7 @@ class IncreaseProductCountView(View):
             cart.total_price += cart_item.product.price
         cart_item.save()
         cart.save()
-        return HttpResponseRedirect(reverse('cart_view'))
+        return HttpResponseRedirect(reverse('cart:cart_view'))
 
 
 class DecreaseProductCountView(View):
@@ -184,7 +183,7 @@ class DecreaseProductCountView(View):
                 cart.total_price -= cart_item.product.price
             cart_item.save()
             cart.save()
-        return HttpResponseRedirect(reverse('cart_view'))
+        return HttpResponseRedirect(reverse('cart:cart_view'))
 
 
 class SelectProductColorView(View):
@@ -217,4 +216,4 @@ class AddCommentView(View):
         comment_text = request.POST.get('comment')
         current_user = ShopUser.objects.get(user=request.user)
         Comment.objects.create(product=current_product, user=current_user, body=comment_text)
-        return HttpResponseRedirect(reverse('product_detail_view', kwargs={'product_id': product_id}))
+        return HttpResponseRedirect(reverse('product:product_detail_view', kwargs={'product_id': product_id}))

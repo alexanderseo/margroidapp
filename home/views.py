@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from auth.forms import ContactForm
+from authuser.forms import ContactForm
 from home.models import SeoHomePage
 from product.models import Product, Category
 from news.models import News

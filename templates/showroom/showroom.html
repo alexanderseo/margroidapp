@@ -1,8 +1,17 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block description %}<meta name="description" content="{{ showroom_description }}">{% endblock description %}
-{% block title %}{{ showroom_title }}{% endblock title %}
+{% block title %}
+
+        {{ seo.title_showroom_page }}
+
+{% endblock title %}
+{% block META_description %}
+
+        {{ seo.description_showroom_page }}
+
+{% endblock %}
+
 
 {% block content %}
 

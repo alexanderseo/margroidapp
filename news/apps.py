@@ -3,4 +3,4 @@ from django.apps import AppConfig
 
 class NewsConfig(AppConfig):
     name = 'news'
-    verbose_name = 'Статьи и новости'
+    verbose_name = '02: Статьи и новости'

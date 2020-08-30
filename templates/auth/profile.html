@@ -1,0 +1,63 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Маргроид | Личный кабинет{% endblock title %}
+
+{% block content %}
+
+<div class="container" id="profile-wrapper">
+	<div class="row">
+		{% include 'widgets/profile-left-menu.html' %}
+		<div class="col-md-9" id="profile-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Персональные данные</span>
+			</div>
+			<div class="main-content">
+				<h1>Персональные данные</h1>
+				<form action="{% url 'save_profile_info_view' %}" method="POST" class="row">
+					<div class="col-md-4">
+						<p><b>Имя</b></p>
+						{% if current_user.user.first_name %}
+						<input type="text" name="profile-name" value="{{ current_user.user.first_name }}" readonly>
+						{% else %}
+						<input type="text" name="profile-name" value="Не указано" readonly>
+						{% endif %}
+					</div>
+					<div class="col-md-4">
+						<p><b>Логин</b></p>
+						<input type="text" name="profile-username" value="{{ current_user.user.username }}" readonly>
+					</div>
+					<div class="col-md-4">
+						<p><b>Дата регистрации</b></p>
+						<input class="only-read" type="text" value="{{ current_user.user.date_joined|date:'d-m-Y' }}" readonly>
+					</div>
+					<div class="col-md-12 profile-email">
+						<p><b>Почтовый ящик</b></p>
+						<input type="text" name="profile-email" value="{{ current_user.user.email }}" readonly>
+					</div>
+					<div class="col-md-6 profile-phone">
+						<p><b>Телефон</b></p>
+						{% if current_user.phone_number %}
+						<input type="tel" name="profile-phone" value="{{ current_user.phone_number }}" readonly>
+						{% else %}
+						<input type="text" class="no-phone" value="Не указан">
+						{% endif %}
+					</div>
+					<div class="col-md-6 profile-sale">
+						<p><b>Скидка</b></p>
+						<input class="only-read" type="text" name="" value="{{ current_user.discount }} %" readonly>
+					</div>
+					<div class="col-md-12" align="right">
+						{% csrf_token %}
+						<input class="btn btn-success" type="submit" id="save-profile-info" style="display: none;" value="Сохранить">
+						<button class="btn" id="edit-profile-info" type="button">Изменить</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

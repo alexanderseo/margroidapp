@@ -1,8 +1,14 @@
 from django.shortcuts import render, reverse
 from django.views.generic.base import View
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
-from auth.models import ShopUser
-from product.models import Product, Category, Sizes
+from authuser.models import ShopUser
+from cart.models import *
+from product.models import *
+from utils.functions_products_cart import get_users_cart, send_user_data, get_watched_products
+from collections import defaultdict
+
 
 class CartAdd(View):
     """
@@ -45,7 +51,7 @@ class CartPage(View):
             result_price = 0
             standart_sale = 0
         categories = Category.objects.all()
-        meta_info = Pages.objects.get(related_page='Корзина')
+        seo = PageCartSeo.objects.first()
         context = {
             'cart': cart,
             'orders_state': 'false',
@@ -58,10 +64,9 @@ class CartPage(View):
             'categories': categories,
             'price_with_discount': result_price,
             'standart_sale': standart_sale,
-            'cart_title': meta_info.meta_title,
-            'cart_description': meta_info.meta_description
+            'seo': seo,
         }
-        return render(request, 'cart.html', context)
+        return render(request, 'cart/cart.html', context)
 
 
 class ComplectToCart(View):
@@ -90,3 +95,120 @@ class RemoveFromCartView(View):
         product = Sizes.objects.get(id=product_id)
         cart.remove_from_cart(product)
         return HttpResponseRedirect(reverse('cart:cart_view'))
+
+
+@login_required(login_url='/login/')
+def orders_view(request):
+    cart, cart_objects_count = get_users_cart(request)
+    compare_list = request.session.get('comparison_list', 0)
+    compare_list_count = len(compare_list) if compare_list else 0
+    current_user = ShopUser.objects.get(user=request.user)
+    orders = Order.objects.filter(user=current_user)
+    orders_info_dict = defaultdict()
+    orders_info_count = {}
+    for order in orders:
+        products = OrderItems.objects.filter(order=order)
+        orders_info_dict[order.id] = products
+        orders_info_count[order.id] = products.count()
+    context = {
+        'personal_data_state': 'false',
+        'cart_state': 'false',
+        'compare_state': 'false',
+        'orders_state': 'true',
+        'comparison_list': compare_list_count,
+        'cart_items_count': cart_objects_count,
+        'orders': orders,
+        'orders_info': orders_info_dict,
+        'orders_info_count': orders_info_count
+    }
+    return render(request, 'cart/orders.html', context)
+
+
+def make_order_view(request):
+    cart, cart_objects_count = get_users_cart(request)
+    total_cart_price = request.POST.get('total-cart-price')
+    first_name = request.POST.get('first-name')
+    email = request.POST.get('email')
+    delivery_type = request.POST.get('delivery-type-radios')
+    full_names = [request.POST.get('full-name-1'), request.POST.get('full-name-2'),
+                  request.POST.get('full-name-3'), request.POST.get('full-name-4')]
+    phones = [request.POST.get('phone-1'), request.POST.get('phone-2'),
+              request.POST.get('phone-3'), request.POST.get('phone-4')]
+    delivery_deadlines = [request.POST.get('delivery-deadline-1'), request.POST.get('delivery-deadline-2')]
+    additional_informations = [request.POST.get('additional-information-1'),
+                               request.POST.get('additional-information-2'),
+                               request.POST.get('additional-information-3'),
+                               request.POST.get('additional-information-4')]
+    region = request.POST.get('region')
+    city = request.POST.get('city')
+    street = request.POST.get('street')
+    house_number = request.POST.get('house-number')
+    padik = request.POST.get('padik')
+    flat_number = request.POST.get('flat-number')
+    payment_type = request.POST.get('payment-type')
+    org_name = request.POST.get('org-name')
+    inn = request.POST.get('inn')
+    legal_address = request.POST.get('legal-address')
+
+    full_name = [x for x in full_names if x != '']
+    phone = [x for x in phones if x != '']
+    deadline = [x for x in delivery_deadlines if x != '']
+    info = [x for x in additional_informations if x != '']
+    full_name = full_name[0] if len(full_name) > 0 else None
+    phone = phone[0] if len(phone) > 0 else None
+    deadline = deadline[0] if len(deadline) > 0 else None
+    info = info[0] if len(info) > 0 else None
+
+    if house_number == '':
+        house_number = None
+    if padik == '':
+        padik = None
+    if flat_number == '':
+        flat_number = None
+    if request.user.is_authenticated:
+        user = ShopUser.objects.get(user=request.user)
+    else:
+        if User.objects.filter(email=email).exists():
+            founded_user = User.objects.get(email=email)
+            user = ShopUser.objects.get(user=founded_user)
+        else:
+            password = User.objects.make_random_password()
+            new_user = User.objects.create(first_name=first_name, email=email)
+            new_user.set_password(password)
+            username = '{0}{1}'.format('unknown_user_', new_user.id)
+            new_user.username = username
+            new_user.save()
+            user = ShopUser.objects.create(user=new_user)
+            send_user_data(username, password, email)
+
+    new_order = Order.objects.create(user=user, name=first_name, full_name=full_name, phone=phone, email=email,
+                                     additional_information=info, delivery_type=delivery_type, delivery_region=region,
+                                     delivery_city=city, delivery_street=street, delivery_house=house_number,
+                                     delivery_padik=padik,
+                                     delivery_flat=flat_number, total_price=total_cart_price,
+                                     delivery_deadline=deadline,
+                                     payment_type=payment_type, org_name=org_name, inn=inn, legal_address=legal_address)
+
+    for cart_item in cart.products.all():
+        OrderItems.objects.create(order=new_order, product=cart_item.product, count=cart_item.count,
+                                  color=cart_item.color, total_price=cart_item.total_price)
+
+    return HttpResponseRedirect(reverse('home:home-page'))
+
+
+def delivery_view(request):
+    cart, cart_objects_count = get_users_cart(request)
+    categories = Category.objects.all()
+    products_on_sale = Product.objects.filter(on_sale=True)[:4]
+    compare_list = request.session.get('comparison_list', 0)
+    compare_list_count = len(compare_list) if compare_list else 0
+    delivery_types = DeliveryType.objects.all()
+    context = {
+        'categories': categories,
+        'products_on_sale': products_on_sale,
+        'watched_products': get_watched_products(request.session.get('watched_products', None)),
+        'comparison_list': compare_list_count,
+        'cart_items_count': cart_objects_count,
+        'delivery_types': delivery_types,
+    }
+    return render(request, 'cart/delivery.html', context)

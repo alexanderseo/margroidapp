@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import View
 from utils.functions_products_cart import *
+from collections import defaultdict
 
 
 class ComparePage(View):
@@ -27,7 +28,6 @@ class ComparePage(View):
         for color in all_colors_objects:
             clear_lst = remove_duplicates_colors(product_colors_clear[color.product.product.id])
             product_colors_clear[color.product.product.id] = clear_lst
-        meta_info = Pages.objects.get(related_page='Сравнение')
         context = {
             'categories': categories,
             'products_on_sale': products_on_sale,
@@ -42,8 +42,6 @@ class ComparePage(View):
             'compare_state': 'true',
             'orders_state': 'false',
             'cart_items_count': cart_objects_count,
-            'compare_title': meta_info.meta_title,
-            'compare_description': meta_info.meta_description
         }
         return render(request, 'compare/compare.html', context)
 
@@ -70,3 +68,11 @@ def generate_comparison_dict(ids):
         for ind in range(len(ids)):
             result[ids[ind]] = 1
     return result
+
+
+def delete_from_comparison_view(request):
+    current_product = request.POST.get('product-id')
+    comparison_list = request.session.get('comparison_list')
+    comparison_list.remove(current_product)
+    request.session['comparison_list'] = comparison_list
+    return HttpResponseRedirect(reverse('compare:compare_view'))

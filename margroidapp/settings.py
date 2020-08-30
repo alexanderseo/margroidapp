@@ -40,6 +40,14 @@ INSTALLED_APPS = [
     # 'debug_toolbar',
     'home.apps.HomeConfig',
     'product.apps.ProductConfig',
+    'authuser.apps.AuthConfig',
+    'cart.apps.CartConfig',
+    'compare.apps.CompareConfig',
+    'components.apps.ComponentsConfig',
+    'news.apps.NewsConfig',
+    'pricelist.apps.PricelistConfig',
+    'search.apps.SearchConfig',
+    'showroom.apps.ShowroomConfig',
 ]
 
 MIDDLEWARE = [
@@ -103,16 +111,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.authuser.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.authuser.password_validation.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.authuser.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.authuser.password_validation.NumericPasswordValidator',
     },
 ]
 

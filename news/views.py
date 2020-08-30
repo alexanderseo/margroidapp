@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from news.models import News
+from news.models import News, PageNewsSeo
 from product.models import Product, Category
 from utils.functions_products_cart import get_watched_products, get_users_cart
 
@@ -15,12 +15,14 @@ class NewsPage(View):
         news = News.objects.all()
         compare_list = request.session.get('comparison_list', 0)
         compare_list_count = len(compare_list) if compare_list else 0
+        seo = PageNewsSeo.objects.first()
         context = {
             'categories': categories,
             'products_on_sale': products_on_sale,
             'news': news,
             'watched_products': get_watched_products(request.session.get('watched_products', None)),
-            'comparison_list': compare_list_count
+            'comparison_list': compare_list_count,
+            'seo': seo,
         }
         return render(request, 'news/news.html', context)
 

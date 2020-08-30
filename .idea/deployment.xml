@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="ZANIN" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="ZANIN">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/www/marg.zanin.online" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/myenv" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

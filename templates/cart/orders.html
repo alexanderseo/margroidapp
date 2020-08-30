@@ -1,0 +1,264 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %}Маргроид | Мои заказы{% endblock title %}
+
+{% block content %}
+
+{% for order in orders %}
+<div class="modal" tabindex="-1" id="modal-order-{{ order.id }}" role="dialog">
+	<div class="modal-dialog container" role="document" style="min-width: 900px;">
+		<div class="modal-content row">
+			<div class="modal-header">
+				<div align="center" class="col-sm-12">
+					<h3 class="modal-title">Заказ № {{ order.id }}</h3>
+				</div>
+<!-- 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button> -->
+			</div>
+			<div class="modal-body row">
+				<div align="center" class="col-sm-12 headers-modal">
+					<h5><strong>Доставка</strong></h5>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>Тип</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_type }}</p>	
+				</div>
+
+				{% if order.delivery_region %}
+				<div align="center" class="col-sm-6">
+					<p>Регион</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_region }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.delivery_city %}
+				<div align="center" class="col-sm-6">
+					<p>Город</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_city }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.delivery_street %}
+				<div align="center" class="col-sm-6">
+					<p>Улица</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_street }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.delivery_house %}
+				<div align="center" class="col-sm-6">
+					<p>Номер дома</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_house }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.delivery_padik %}
+				<div align="center" class="col-sm-6">
+					<p>Подъезд</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_padik }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.delivery_flat %}
+				<div align="center" class="col-sm-6">
+					<p>Квартира</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.delivery_flat }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.take_away_address %}
+				<div align="center" class="col-sm-6">
+					<p>Адрес самовывоза</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.take_away_address }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.transport_company_address %}
+				<div align="center" class="col-sm-6">
+					<p>Адрес транспортной компании</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.transport_company_address }}</p>	
+				</div>
+				{% endif %}
+
+				<div align="center" class="col-sm-12 headers-modal">
+					<h5><strong>Контактные данные</strong></h5>
+				</div>
+
+				<div align="center" class="col-sm-6">
+					<p>Имя</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.name }}</p>
+				</div>
+
+				{% if order.full_name %}
+				<div align="center" class="col-sm-6">
+					<p>Полное имя</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.full_name }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.phone %}
+				<div align="center" class="col-sm-6">
+					<p>Телефон</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.phone }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.email %}
+				<div align="center" class="col-sm-6">
+					<p>Почта</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.email }}</p>	
+				</div>
+				{% endif %}
+
+				<div align="center" class="col-sm-12 headers-modal">
+					<h5><strong>Оплата</strong></h5>
+				</div>
+
+				<div align="center" class="col-sm-6">
+					<p>Способ оплаты</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.payment_type }}</p>	
+				</div>
+
+				{% if order.org_name %}
+				<div align="center" class="col-sm-6">
+					<p>Наименование организации</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.org_name }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.inn %}
+				<div align="center" class="col-sm-6">
+					<p>ИНН</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.inn }}</p>	
+				</div>
+				{% endif %}
+
+				{% if order.legal_address %}
+				<div align="center" class="col-sm-6">
+					<p>Юридический адрес</p>
+				</div>
+				<div align="center" class="col-sm-6">
+					<p>{{ order.legal_address }}</p>	
+				</div>
+				{% endif %}
+
+				<div align="center" class="col-sm-12 headers-modal">
+					<h5><strong>Товары</strong></h5>
+				</div>
+
+				<div align="center" class="col-sm-6">
+					<p>Наименование</p>
+				</div>
+
+				<div align="center" class="col-sm-3">
+					<p>Кол-во</p>
+				</div>
+
+				<div align="center" class="col-sm-3">
+					<p>Цена</p>
+				</div>
+
+				{% for order_id, prods in orders_info.items %}
+				{% if order.id == order_id %}
+				{% for product in prods %}
+				<div align="center" class="col-sm-6">
+					<p>
+						<strong>
+							{{ product.product.product.name }} {% if product.product.width %} ({{ product.product.height }} * {{ product.product.width }}) {% endif %}
+						</strong>
+					</p>
+				</div>
+
+				<div align="center" class="col-sm-3">
+					<p><strong>{{ product.count }}</strong></p>
+				</div>
+
+				<div align="center" class="col-sm-3">
+					<p><strong>{{ product.total_price }} ₽</strong></p>
+				</div>
+				{% endfor %}
+				{% endif %}
+				{% endfor %}
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+<div class="container" id="orders-wrapper">
+	<div class="row">
+		{% include 'profile-left-menu.html' %}
+		<div class="col-md-9" id="orders-content">
+			<div class="nav-helper">
+				<a href="{% url 'base_view' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Мои заказы</span>
+			</div>
+			<h1>Мои заказы</h1>
+			<table id="order-list" style="text-align:center;width:100%;" class="list table table-bordered table-hover">
+				<thead style="background-color: #e8e8e8;">
+					<tr id="allspec">
+						<td><b style="">№ Заказа</b></td>
+						<td><b style="">Дата</b></td>
+						<td><b style="">Кол-во</b></td>
+						<td><b style="">Сумма</b></td>
+						<td><b style="">Статус</b></td>
+					</tr>
+				</thead>
+				<tbody>
+					{% for order in orders %}
+					<tr>
+						<td class="view-order" order-id="{{ order.id }}" colspan="1"><a style="cursor: pointer;" class="text-primary">{{ order.id }}</a></td>
+						<td colspan="1">{{ order.timestamp|date:"SHORT_DATE_FORMAT" }}</td>
+						{% if order.id in orders_info_count %}
+						<td colspan="1">{{ orders_info_count|get_item:order.id }}</td>
+						{% endif %}
+						<td colspan="1">{{ order.total_price }} руб.</td>
+						<td><b style="color:">{{ order.status }}</b></td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

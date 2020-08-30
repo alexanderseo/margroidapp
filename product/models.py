@@ -5,7 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
-from auth.models import ShopUser
+from authuser.models import ShopUser
 
 
 class CategoryChild(models.Model):
@@ -33,8 +33,8 @@ class CategoryChild(models.Model):
                             verbose_name='URL-адрес')
 
     class Meta:
-        verbose_name = 'Подкатегория'
-        verbose_name_plural = 'Подкатегории'
+        verbose_name = '02: Подкатегория'
+        verbose_name_plural = '02: Подкатегории'
 
     def __str__(self):
         return self.name
@@ -68,8 +68,8 @@ class Category(models.Model):
                                      verbose_name='Подкатегории')
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
+        verbose_name = '01: Категория'
+        verbose_name_plural = '01: Категории'
 
     def __str__(self):
         return self.name
@@ -134,8 +134,8 @@ class Product(models.Model):
 
     class Meta:
         ordering = ['-category', 'name', 'price']
-        verbose_name = 'Товар'
-        verbose_name_plural = 'Товары'
+        verbose_name = '03: Товар'
+        verbose_name_plural = '03: Товары'
 
     def __str__(self):
         return self.name
@@ -205,8 +205,8 @@ class Sizes(models.Model):
         super(Sizes, self).update(*args, **kwargs)
 
     class Meta:
-        verbose_name = 'Размер товара'
-        verbose_name_plural = 'Размеры'
+        verbose_name = '04: Размер товара'
+        verbose_name_plural = '04: Размеры'
 
     def __str__(self):
         return "{0} ({1}*{2}) - (ID размера: {3} - ID товара {4})".format(self.product.name, self.height, self.width, self.id, self.product_id)
@@ -230,8 +230,8 @@ class Colors(models.Model):
     price = models.PositiveIntegerField(default=3000, verbose_name='Цена')
 
     class Meta:
-        verbose_name = 'Цвет товара'
-        verbose_name_plural = 'Цвета'
+        verbose_name = '05: Цвет товара'
+        verbose_name_plural = '05: Цвета'
 
     def __str__(self):
         return self.name
@@ -251,3 +251,65 @@ class Comment(models.Model):
 
     def __str__(self):
         return "Комментарий к продукту {0} от {1}".format(self.product.name, self.user.user.username)
+
+
+class ProductColorsSizes(models.Model):
+    """
+    Модель из старой логики сайта,
+    чтобы не переписывать некотрые функции в карточке товара и корзине,
+    сюда сохраняется связь цвета и размера
+    """
+    product = models.ForeignKey(Sizes, on_delete=models.CASCADE, verbose_name='Продукт (с размером)')
+    color = models.ForeignKey(Colors, on_delete=models.CASCADE, verbose_name='Цвет')
+    price = models.PositiveIntegerField(default=0, verbose_name='Цена')
+    saleprice = models.PositiveIntegerField(blank=True,
+                                            null=True,
+                                            help_text='Вычисляется само при сохранении',
+                                            verbose_name='Цена по скидке')
+
+    # Общая цена для цвета
+    @property
+    def price_color_plus_product_price(self):
+        from_product_price = self.product.product.price
+        base_color_price = self.color.price
+        total_price = from_product_price + base_color_price
+        return total_price
+
+    # Функциональное поле, для цены со скидкой по всем размерам и цветам
+    @property
+    def new_price_with_sale_with_size_on_color(self):
+        sizecolorproduct = self.product.price
+        skidka = self.product.product
+        colorprice = self.color.price
+        if skidka.on_sale:
+            percent = Decimal((100 - skidka.sale) / 100)
+            saleprice = colorprice + sizecolorproduct * percent.quantize(Decimal('1.00'))
+            return saleprice
+        else:
+            return self.price
+
+    def save(self, *args, **kwargs):
+        self.price = self.price_color_plus_product_price
+        self.saleprice = self.new_price_with_sale_with_size_on_color
+        super(ProductColorsSizes, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = 'Цены цветов'
+
+    def __str__(self):
+        return "{0} - {1}".format(self.product.product.name, self.color.name)
+
+
+@receiver(post_save, sender=Colors)
+def update_price_for_colorsize(sender, instance, **kwargs):
+    """
+    Сигнал, если базовая цена цвета изменилась, то изменилась ProductColorsSizes
+    :param sender:
+    :param instance:
+    :param kwargs:
+    :return:
+    """
+    color = Colors.objects.get(name=instance)
+    savecolorsize = ProductColorsSizes.objects.filter(color=color)
+    for ss in savecolorsize:
+        ss.save()

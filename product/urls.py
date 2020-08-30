@@ -5,8 +5,8 @@ app_name = 'product'
 
 
 urlpatterns = [
-    path('<slug:product_id>/', ProductPage.as_view(), name='product-page'),
-    path('<slug:category_slug>/<subcategory_slug>/', SubCategoryPage.as_view(), name='subcategory_detail_view'),
+    path('<slug:product_id>/', ProductPage.as_view(), name='product_detail_view'),
+    path('<slug:category_slug>/<slug:subcategory_slug>/', SubCategoryPage.as_view(), name='subcategory_detail_view'),
     path('<slug:category_slug>/', CategoryPage.as_view(), name='category_detail_view'),
     path('inc-product-count/', IncreaseProductCountView.as_view(), name='increase_product_count_view'),
     path('dec-product-count/', DecreaseProductCountView.as_view(), name='decrease_product_count_view'),

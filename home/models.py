@@ -32,8 +32,8 @@ class Header(models.Model):
                                  verbose_name='Номер телефона 2')
 
     class Meta:
-        verbose_name = 'Шапка сайта: настройки'
-        verbose_name_plural = 'Шапка сайта: настройки'
+        verbose_name = '02: Шапка сайта: настройки'
+        verbose_name_plural = '02: Шапка сайта: настройки'
 
     def __str__(self):
         return self.name_element
@@ -57,8 +57,8 @@ class SeoHomePage(models.Model):
                                              verbose_name='Description главной страницы')
 
     class Meta:
-        verbose_name = 'Главная страница: SEO'
-        verbose_name_plural = 'Главная страница: SEO'
+        verbose_name = '01: Главная страница: SEO'
+        verbose_name_plural = '01: Главная страница: SEO'
 
     def __str__(self):
         return self.name_element
@@ -67,3 +67,57 @@ class SeoHomePage(models.Model):
         validate_only_one_instance(self)
 
 
+class ContactBlockHomePage(models.Model):
+    name_element = models.CharField(max_length=100,
+                                    help_text='название элемента, до 100 символов',
+                                    default='Контакты',
+                                    verbose_name='Название элемента')
+    text_header = models.CharField(max_length=200,
+                                       blank=True,
+                                       help_text='Текст до 200 символов',
+                                       verbose_name='Текст или адрес')
+    phone_one = models.CharField(max_length=20,
+                                 blank=True,
+                                 help_text='пишется ф формате: +7(999)-888-6655',
+                                 verbose_name='Номер телефона 1')
+
+    class Meta:
+        verbose_name = '03: Блок контакты на главной: настройки'
+        verbose_name_plural = '03: Блок контакты на главной: настройки'
+
+    def __str__(self):
+        return self.name_element
+
+    def clean(self):
+        validate_only_one_instance(self)
+
+
+class ContactBlockFooter(models.Model):
+    name_element = models.CharField(max_length=100,
+                                    help_text='название элемента, до 100 символов',
+                                    default='Контакты',
+                                    verbose_name='Название элемента')
+    text_header = models.CharField(max_length=200,
+                                       blank=True,
+                                       help_text='Текст до 200 символов',
+                                       verbose_name='Текст или адрес')
+    email = models.EmailField(default='Margroid@mai.ru',
+                              verbose_name='Электронная почта')
+    phone_one = models.CharField(max_length=20,
+                                 blank=True,
+                                 help_text='пишется ф формате: +7(999)-888-6655',
+                                 verbose_name='Номер телефона 1')
+    phone_two = models.CharField(max_length=20,
+                                 blank=True,
+                                 help_text='пишется ф формате: +7(999)-888-6655',
+                                 verbose_name='Номер телефона 2')
+
+    class Meta:
+        verbose_name = '04: Блок контакты в футере: настройки'
+        verbose_name_plural = '04: Блок контакты в футере: настройки'
+
+    def __str__(self):
+        return self.name_element
+
+    def clean(self):
+        validate_only_one_instance(self)

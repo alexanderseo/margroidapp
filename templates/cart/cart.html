@@ -1,0 +1,272 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block description %}<meta name="description" content="{{ cart_description }}">{% endblock description %}
+{% block title %}{{ cart_title }}{% endblock title %}
+
+{% block content %}
+
+<div class="container" id="cart-wrapper">
+	<div class="row">
+		{% include 'widgets/profile-left-menu.html' %}
+		<div class="col-md-9" id="cart-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Корзина</span>
+			</div>
+			<h1>Корзина</h1>
+			{% if cart.products.all %}
+			<div class="table-responsive">
+				<table class="table" id="product-table">
+					<thead>
+						<tr>
+							<th colspan="2" scope="col">Наименование</th>
+							<th colspan="1" scope="col" class="text-center">Кол-во</th>
+							<th colspan="1" width="140" scope="col" class="text-center">Цена за 1 шт.</th>
+							<th colspan="1" scope="col" class="text-center">Стоимость</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for product in cart.products.all %}
+						<tr>
+							<td><a href="{% url 'product_detail_view' product.product.product.id %}"><img src="{{ product.product.product.image.url }}" height="100"></a></td>
+
+							<td width="200">
+								<a href="{% url 'product_detail_view' product.product.product.id %}">{{ product.product.product.name|upper }} ({{ product.product.height }}*{{ product.product.width }}).<br>ЦВЕТ: {% if product.color %} <span>{{ product.color|upper }}</span> {% else %} <span>СТАНДАРТНЫЙ</span> {% endif %}</a>
+							</td>
+
+							<td width="170" class="text-center">
+								<form style="display: inline;" method="GET" action="{% url 'decrease_product_count_view' %}">
+									<button type="submit" class="btn btn-default" style="background-color: white; box-shadow: none;">
+										<input type="hidden" name="item-id" value="{{ product.id }}">
+										<i class="fa fa-minus" aria-hidden="true"></i>
+									</button>
+								</form>
+								<input style="width: 50px; display: inline; margin-right: 0;" type="text" class="form-control" value="{{ product.count }}" min="1">
+								<form style="display: inline;" method="GET" action="{% url 'increase_product_count_view' %}">
+									<input type="hidden" name="item-id" value="{{ product.id }}">
+									<button type="submit" class="btn btn-default" style="background-color: white; box-shadow: none;">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</button>
+								</form>
+							</td>
+
+							{% if not product.color %}
+							<td class="text-center per-item-price">{% if product.product.product.on_sale == True %}{{ product.product.saleprice }}{% else %}{{ product.product.price }}{% endif %} ₽</td>
+							{% else %}
+							<td class="text-center per-item-price">{{ product.price_per_item_color }} ₽</td>
+							{% endif %}
+
+							<td class="text-center item-price-total total-item-price-{{ product.id }}">{{ product.total_price }} ₽</td>
+
+							<form action="{% url 'remove_from_cart_view' %}" method="GET">
+								<input type="hidden" name="cart-item" value="{{ product.product.id }}">	
+								<td class="text-right"><button type="submit" class="btn btn-sm btn-danger"><i style="color: white; box-shadow: none;" class="fa fa-trash" aria-hidden="true"></i></button></td>
+							</form>
+						</tr>
+						{% endfor %}
+						<div class="cart-footer">
+							<tr class="delivery-row">
+								<td colspan="1"></td>
+								<td colspan="1"></td>
+								<td colspan="2">Доставка:</td>
+								{% if cart.total_price >= 20000 %}
+								<td colspan="2" class="text-right delivery-cost"><b>0 ₽</b></td>
+								{% else %}
+								<td colspan="2" class="text-right delivery-cost"><b>500 ₽</b></td>								
+								{% endif %}
+							</tr>
+							<tr class="default-sale">
+								<td colspan="1"></td>
+								<td colspan="1"></td>
+								<td colspan="2">Стандартная скидка:</td>
+								<td colspan="2" class="text-right cart-total-price"><b>{{ standart_sale }} %</b></td>
+							</tr>
+							<tr class="price-row">
+								<td colspan="1"></td>
+								<td colspan="1"></td>
+								<td colspan="2">Персональная скидка:</td>
+								{% if current_user is None %}
+								<td colspan="2" class="text-right discount-value"><b>0 %</b></td>
+								{% else %}
+								<td colspan="2" class="text-right discount-value"><b>{{ current_user.discount }} %</b></td>
+								{% endif %}
+							</tr>
+							<tr class="result-price-row">
+								<td colspan="1"></td>
+								<td colspan="1"></td>
+								<td colspan="2">Итого (с учетом скидки):</td>
+								<td colspan="2" class="text-right cart-total-price"><b>{{ price_with_discount }} ₽</b></td>
+							</tr>
+						</div>
+					</tbody>
+				</table>
+			</div>
+
+
+			<div class="col-xl-12 personal-data-header">
+				<p>Личные данные</p>
+			</div>
+
+			<form method="POST" action="{% url 'make_order_view' %}">
+				{% csrf_token %}
+				<input type="hidden" name="total-cart-price" value="{{ price_with_discount }}">
+				<div class="row" id="personal-data-wrapper">
+					<div class="col-lg-6">
+						{% if current_user.user.first_name %}
+						<input class="form-control" placeholder="Имя" type="text" value="{{ current_user.user.first_name }}" name="first-name" required>
+						{% else %}
+						<input class="form-control" placeholder="Имя" type="text" name="first-name" required>
+						{% endif %}
+						<input class="form-control" placeholder="Email" type="email" value="{{ current_user.user.email }}" name="email" required>
+					</div>
+					<div class="col-lg-6">
+						<p>
+							<i class="fa fa-info-circle" aria-hidden="true"></i>
+							Если Вы - новый пользователь, то личный кабинет мы создадим за Вас и пришлём пароли на почту. Если Вы не авторизованы, мы узнаем Вас по емейлу и привяжем этот заказ к Вашему аккаунту.
+						</p>
+					</div>
+				</div>
+
+				<div class="col-xl-12 delivery-header">
+					<p>Доставка, адрес получателя</p>
+				</div>
+
+				<div class="row" id="delivery-info-wrapper">
+					<div class="col-xl-6">
+						<fieldset id="delivery-type-radios">
+							<div class="form-check" id="before-mkad-left">
+								<input class="form-check-input" type="radio" name="delivery-type-radios" id="before-mkad" checked value="Доставка курьером в пределах МКАД">
+								<label class="form-check-label" for="before-mkad">
+									<img src="{% static 'img/courier1.png' %}" height="25">
+									<span>Доставка курьером в пределах МКАД</span>
+								</label>
+							</div>
+							<div class="form-check" id="after-mkad-left">
+								<input class="form-check-input" type="radio" name="delivery-type-radios" id="after-mkad" value="Доставка курьером за пределами МКАД">
+								<label class="form-check-label" for="after-mkad">
+									<img src="{% static 'img/courier2.png' %}" height="25">
+									<span>Доставка курьером за пределами МКАД</span>
+								</label>
+							</div>
+							<div class="form-check" id="transport-company-left">
+								<input class="form-check-input" type="radio" name="delivery-type-radios" id="transport-company" value="Доставка до транспортной компании">
+								<label class="form-check-label" for="transport-company">
+									<img src="{% static 'img/courier3.png' %}" height="25">
+									<span>Доставка до транспортной компании</span>
+								</label>
+							</div>
+							<div class="form-check" id="take-away-left">
+								<input class="form-check-input" type="radio" id="take-away" name="delivery-type-radios" value="Самовывоз">
+								<label class="form-check-label" for="take-away">
+									<img src="{% static 'img/courier4.png' %}" height="25">
+									<span>Самовывоз</span>
+								</label>
+							</div>
+						</fieldset>
+					</div>
+
+					<div id="before-mkad-form" class="col-xl-6">
+						<input class="form-control" placeholder="ФИО" type="text" name="full-name-1">
+						<input class="form-control" placeholder="Телефон" type="text" name="phone-1">
+						<input class="form-control" placeholder="Когда доставить?" type="text" name="delivery-deadline-1">
+						<label>Дополнительная информация к заказу</label>
+						<textarea class="form-control" name="additional-information-1" rows="3"></textarea>
+					</div>
+
+					<div id="after-mkad-form" class="col-xl-6" style="display: none;">
+						<label>Регион</label>
+						<select class="custom-select" name="region">
+							<option value="" for="0">-----------</option><option value="Адыгея" for="1998532">Адыгея</option><option value="Алтайский край" for="3160">Алтайский край</option><option value="Амурская обл." for="3223">Амурская обл.</option><option value="Архангельская обл." for="3251">Архангельская обл.</option><option value="Астраханская обл." for="3282">Астраханская обл.</option><option value="Башкортостан(Башкирия)" for="3296">Башкортостан(Башкирия)</option><option value="Белгородская обл." for="3352">Белгородская обл.</option><option value="Брянская обл." for="3371">Брянская обл.</option><option value="Бурятия" for="3407">Бурятия</option><option value="Владимирская обл." for="3437">Владимирская обл.</option><option value="Волгоградская обл." for="3468">Волгоградская обл.</option><option value="Вологодская обл." for="3503">Вологодская обл.</option><option value="Воронежская обл." for="3529">Воронежская обл.</option><option value="Дагестан" for="3630">Дагестан</option><option value="Еврейская обл." for="3673">Еврейская обл.</option><option value="Ивановская обл." for="3675">Ивановская обл.</option><option value="Иркутская обл." for="3703">Иркутская обл.</option><option value="Кабардино-Балкария" for="3751">Кабардино-Балкария</option><option value="Калининградская обл." for="3761">Калининградская обл.</option><option value="Калмыкия" for="3827">Калмыкия</option><option value="Калужская обл." for="3841">Калужская обл.</option><option value="Камчатская обл." for="3872">Камчатская обл.</option><option value="Карелия" for="3892">Карелия</option><option value="Кемеровская обл." for="3921">Кемеровская обл.</option><option value="Кировская обл." for="3952">Кировская обл.</option><option value="Коми" for="3994">Коми</option><option value="Костромская обл." for="4026">Костромская обл.</option><option value="Краснодарский край" for="4052">Краснодарский край</option><option value="Красноярский край" for="4105">Красноярский край</option><option value="Курганская обл." for="4176">Курганская обл.</option><option value="Курская обл." for="4198">Курская обл.</option><option value="Липецкая обл." for="4227">Липецкая обл.</option><option value="Магаданская обл." for="4243">Магаданская обл.</option><option value="Марий Эл" for="4270">Марий Эл</option><option value="Мордовия" for="4287">Мордовия</option><option value="Москва и Московская обл." for="4312">Москва и Московская обл.</option><option value="Мурманская обл." for="4481">Мурманская обл.</option><option value="Нижегородская (Горьковская)" for="3563">Нижегородская (Горьковская)</option><option value="Новгородская обл." for="4503">Новгородская обл.</option><option value="Новосибирская обл." for="4528">Новосибирская обл.</option><option value="Омская обл." for="4561">Омская обл.</option><option value="Оренбургская обл." for="4593">Оренбургская обл.</option><option value="Орловская обл." for="4633">Орловская обл.</option><option value="Пензенская обл." for="4657">Пензенская обл.</option><option value="Пермская обл." for="4689">Пермская обл.</option><option value="Приморский край" for="4734">Приморский край</option><option value="Псковская обл." for="4773">Псковская обл.</option><option value="Ростовская обл." for="4800">Ростовская обл.</option><option value="Рязанская обл." for="4861">Рязанская обл.</option><option value="Самарская обл." for="4891">Самарская обл.</option><option value="Санкт-Петербург и область" for="4925">Санкт-Петербург и область</option><option value="Саратовская обл." for="4969">Саратовская обл.</option><option value="Саха (Якутия)" for="5011">Саха (Якутия)</option><option value="Сахалин" for="5052">Сахалин</option><option value="Свердловская обл." for="5080">Свердловская обл.</option><option value="Северная Осетия" for="5151">Северная Осетия</option><option value="Смоленская обл." for="5161">Смоленская обл.</option><option value="Ставропольский край" for="5191">Ставропольский край</option><option value="Тамбовская обл." for="5225">Тамбовская обл.</option><option value="Татарстан" for="5246">Татарстан</option><option value="Тверская обл." for="3784">Тверская обл.</option><option value="Томская обл." for="5291">Томская обл.</option><option value="Тува (Тувинская Респ.)" for="5312">Тува (Тувинская Респ.)</option><option value="Тульская обл." for="5326">Тульская обл.</option><option value="Тюменская обл." for="5356">Тюменская обл.</option><option value="Удмуртия" for="5404">Удмуртия</option><option value="Ульяновская обл." for="5432">Ульяновская обл.</option><option value="Уральская обл." for="5458">Уральская обл.</option><option value="Хабаровский край" for="5473">Хабаровский край</option><option value="Хакасия" for="2316497">Хакасия</option><option value="Ханты-Мансийский АО" for="2499002">Ханты-Мансийский АО</option><option value="Челябинская обл." for="5507">Челябинская обл.</option><option value="Чечено-Ингушетия" for="5543">Чечено-Ингушетия</option><option value="Читинская обл." for="5555">Читинская обл.</option><option value="Чувашия" for="5600">Чувашия</option><option value="Чукотский АО" for="2415585">Чукотский АО</option><option value="Ямало-Ненецкий АО" for="5019394">Ямало-Ненецкий АО</option><option value="Ярославская обл." for="5625">Ярославская обл.</option>
+						</select>
+						<label>Город:</label>
+						<input class="form-control" type="text" placeholder="Название города" name="city">
+						<input class="form-control" placeholder="ФИО" type="text" name="full-name-2">
+						<input class="form-control" type="text" placeholder="Телефон" name="phone-2">
+						<input class="form-control" type="text" placeholder="Улица" name="street">
+						<input class="form-control" type="text" placeholder="Дом" name="house-number">
+						<input class="form-control" type="text" placeholder="Подъезд" name="padik">
+						<input class="form-control" type="text" placeholder="Квартира" name="flat-number">
+						<input class="form-control" placeholder="Когда доставить?" type="text" name="delivery-deadline-2">
+						<label>Дополнительная информация к заказу</label>
+						<textarea class="form-control" name="additional-information-2" rows="3"></textarea>
+					</div>
+
+					<div id="transport-company-form" class="col-xl-6" style="display: none;">
+						<input class="form-control" placeholder="ФИО" type="text" name="full-name-3" style="margin-bottom: 10px;">
+						<input class="form-control" placeholder="Телефон" type="text" name="phone-3" style="margin-bottom: 10px;">
+						<input class="form-control" type="text" placeholder="Адрес" name="transport-company" style="margin-bottom: 10px;">
+						<label>Дополнительная информация к заказу</label>
+						<textarea class="form-control" name="additional-information-3" rows="3"></textarea>
+					</div>
+
+					<div id="take-away-form" class="col-xl-6" style="display: none;">
+						<input class="form-control" placeholder="ФИО" type="text" name="full-name-4">
+						<input class="form-control" placeholder="Телефон" type="text" name="phone-4">
+						<select class="form-control">
+							<option selected>Западная улица, с100 рабочий посёлок Новоивановское, Одинцовский городской округ</option>
+						</select>
+						<label>Дополнительная информация к заказу</label>
+						<textarea name="additional-information-4" class="form-control" rows="3"></textarea>
+					</div>
+				</div>
+
+				<div class="col-xl-12 payment-type-header">
+					<p>Способ оплаты</p>
+				</div>
+
+				<div class="row">
+					<fieldset id="payment-type" class="col-xl-6">
+						<div class="form-check not-bank-payment">
+							<input class="form-check-input" name="payment-type" id="cash-type" checked type="radio" value="Наличная оплата">
+							<label class="form-check-label" for="cash-type">
+								<img src="{% static 'img/cash_type.png' %}" height="25">
+								<span>Наличная оплата</span>
+							</label>
+						</div>
+
+						<div class="form-check not-bank-payment">
+							<input class="form-check-input" name="payment-type" id="sber-type" type="radio" value="Квитанция сбербанка">
+							<label class="form-check-label" for="sber-type">
+								<img src="{% static 'img/sber_type.png' %}" height="25">
+								<span>Квитанция сбербанка</span>
+							</label>
+						</div>
+
+						<div class="form-check" id="bank-payment-left">
+							<input class="form-check-input" name="payment-type" type="radio" id="transfer-type" value="Банковский перевод">
+							<label class="form-check-label" for="transfer-type">
+								<img src="{% static 'img/bank_type.png' %}" height="25">
+								<span>Банковский перевод</span>
+							</label>
+						</div>
+					</fieldset>
+
+					<div id="bank-payment-form" class="col-xl-6" style="display: none;">
+						<input class="form-control" placeholder="Наименование организации" type="text" name="org-name">
+						<input class="form-control" placeholder="ИНН" type="text" name="inn">
+						<input class="form-control" placeholder="Юридический адрес" type="text" name="legal-address">
+					</div>
+
+					<div class="col-xl-12" align="center" style="margin-top: 40px;">
+						<input type="submit" class="btn btn-success" value="Оформить заказ"/>
+					</div>
+				</div>
+			</form>
+		</div>
+		{% else %}
+		<div align="center" style="margin-top: 40px;">
+			<img src="{% static 'img/empty-cart.png' %}">
+			<p>
+				Вы не добавили ни одного товара в корзину.<br>
+				Возвращайтесь на <a href="{% url 'base_view' %}">главную страницу</a> и продолжайте поиск!
+			</p>
+		</div>
+		{% endif %}
+	</div>
+</div>
+</div>
+
+{% endblock content %}

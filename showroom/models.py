@@ -49,7 +49,7 @@ class ShowRoomModel(models.Model):
         return reverse('showroom:showroom_view', args=[self.slug])
 
 
-class Fotogalery(models.Model):
+class FotogaleryShowRoom(models.Model):
     """
     Модель фото для страницы ShowRoom
     """
@@ -74,7 +74,7 @@ class Content(models.Model):
     """
     Модель обобщенного типа для фото
     """
-    module = models.ForeignKey(Fotogalery, related_name='contents', on_delete=models.CASCADE)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    module = models.ForeignKey(FotogaleryShowRoom, related_name='fotocontent', on_delete=models.CASCADE)
+    content_type = models.ForeignKey(ContentType, related_name='contentstype', on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     item = GenericForeignKey('content_type', 'object_id')

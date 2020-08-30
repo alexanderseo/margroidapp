@@ -49,10 +49,10 @@
 		<div class="container">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a href="" class="compare-products"><i class="fa fa-files-o" aria-hidden="true"></i> Сравнение <span class="badge badge-secondary"></span></a>
+					<a href="{% url 'compare:compare_view' %}" class="compare-products"><i class="fa fa-files-o" aria-hidden="true"></i> Сравнение <span class="badge badge-secondary"></span></a>
 				</li>
 				<li class="nav-item">
-					<a href="" class="cart-products"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Корзина <span class="badge badge-secondary"></span></a>
+					<a href="{% url 'cart:cart_view' %}" class="cart-products"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Корзина <span class="badge badge-secondary"></span></a>
 				</li>
 
 				<li class="nav-item dropdown">
@@ -60,15 +60,15 @@
 						<i class="fa fa-user" aria-hidden="true"></i> Профиль
 					</a>
 					<div class="dropdown-menu" aria-labelledby="profile-dropdown">
-						<a class="dropdown-item" href="">Персональные данные</a>
-						<a class="dropdown-item" href="">Мои заказы</a>
+						<a class="dropdown-item" href="{% url 'authuser:profile_view' %}">Персональные данные</a>
+						<a class="dropdown-item" href="{% url 'cart:orders_view' %}">Мои заказы</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="">Выход</a>
+						<a class="dropdown-item" href="{% url 'authuser:logout_view' %}">Выход</a>
 					</div>
 				</li>
 
 				<li class="nav-item">
-					<a href=""><i class="fa fa-sign-in" aria-hidden="true"></i> Войти</a>
+					<a href="{% url 'authuser:login_view' %}"><i class="fa fa-sign-in" aria-hidden="true"></i> Войти</a>
 				</li>
 
 			</ul>
@@ -79,7 +79,7 @@
 		<div class="container" id="middle-navbar">
 			<div class="row" id="info-navbar">
                     {% header_elements %}
-				<form class="col-xl-4 col-lg-4 col-md-5" method="GET" action="">
+				<form class="col-xl-4 col-lg-4 col-md-5" method="GET" action="{% url 'search:search_view' %}">
 					<div class="input-group">
 						<input class="form-control py-2" placeholder="Поиск по каталогу" name="q">
 						<span class="input-group-append">
@@ -111,19 +111,19 @@
 							Все товары
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-							<a class="dropdown-item" href=""></a>
-
-							<a class="dropdown-item" href=""></a>
-
-
-						</div>
+                            {% for category in categories %}
+							{% if category.subtype.all %}
+							<a class="dropdown-item" href="{% url 'product:category_detail_view' category.slug %}">{{ category.name }}</a>
+							{% else %}
+							<a class="dropdown-item" href="{% url 'components:components_view' %}">{{ category.name }}</a>
+							{% endif %}
+							{% endfor %}
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="">Show Room</a>
+						<a class="nav-link" href="{% url 'showroom:showroom_view' %}">Show Room</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="">Доставка</a>
+						<a class="nav-link" href="{% url 'cart:delivery_view' %}">Доставка</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="/#contacts">Контакты</a>

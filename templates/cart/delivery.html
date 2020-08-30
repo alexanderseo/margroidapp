@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block description %}<meta name="description" content="{{ delivery_description }}">{% endblock description %}
+{% block title %}{{ delivery_title }}{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		{% include 'widgets/left-info-menu.html' with start_width=4 caption_width=9 %}
+		<div class="col-xl-8 col-md-8" id="delivery-content">
+			<div class="nav-helper">
+				<a href="{% url 'home:home-page' %}">Главная</a>
+				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+				<span>Доставка</span>
+			</div>
+			<div class="main-content">
+				<h1>Доставка</h1>
+				{% for del_type in delivery_types %}
+				<div class="row">
+					<div class="delivery-item-info col-xl-3 col-lg-3 col-md-4 col-sm-4">
+						<img src="{{ del_type.image.url }}" alt="" class="img-fluid">
+					</div>
+					<div class="col-xl-9 col-lg-9 col-md-8 col-sm-8 paragraph-item">
+						<p>{{ del_type.description }}</p>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

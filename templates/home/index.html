@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html' %}
+{% load header_tags %}
 
 {% block title %}
     {{ seo.title_home_page }}
@@ -85,7 +86,7 @@
 		</div>
 
 		<div class="container" id="news">
-			<h2 align="center"><a href="">Новости</a></h2>
+			<h2 align="center"><a href="{% url 'news:news_view' %}">Новости</a></h2>
 
 			<div class="row">
 
@@ -100,26 +101,7 @@
 		</div>
 
 		<div class="container" id="contacts">
-			<h2 align="center">Контакты</h2>
-			<div class="" id="contact-changer">
-				<div class="row">
-					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6" align="center">
-						<i class="fa fa-map-marker" aria-hidden="true"></i>
-					</div>
-					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6" align="center">
-						<i class="fa fa-phone" aria-hidden="true"></i>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 contact-info" align="center">
-						<p>Западная улица, стр 100 рабочий посёлок Новоивановское, Одинцовский городской округ (2 этаж, павильон B-71).</p>
-					</div>
-					<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 contact-info" align="center">
-						<p>8 (977) 873-01-77</p>
-					</div>
-				</div>
-			</div>
+			{% contact_elements %}
 
 			<style type="text/css">
 				.marker {

@@ -1,12 +1,12 @@
 from django.contrib import admin
-from showroom.models import ShowRoomModel, Fotogalery
+from showroom.models import ShowRoomModel, FotogaleryShowRoom
 
 
-class FotogaleryInline(admin.StackedInline):
-    model = Fotogalery
+class FotogaleryShowRoomInline(admin.StackedInline):
+    model = FotogaleryShowRoom
 
 
 @admin.register(ShowRoomModel)
 class ShowRoomModelAdmin(admin.ModelAdmin):
     list_display = ('name_element', 'name', )
-    inlines = [FotogaleryInline]
+    inlines = [FotogaleryShowRoomInline]

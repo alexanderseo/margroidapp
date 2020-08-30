@@ -1,8 +1,10 @@
 from django.template.defaulttags import register
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect, JsonResponse
+from django.conf import settings
+from django.core.mail import send_mail
 from product.models import *
-
+from cart.models import *
 
 @register.filter
 def get_item(dictionary, key):
@@ -146,4 +148,10 @@ def remove_from_cart_view(request):
     product = Sizes.objects.get(id=product_id)
     cart.remove_from_cart(product)
     return HttpResponseRedirect(reverse('cart_view'))
+
+
+def send_user_data(username, password, email):
+    subject = 'TDVELS - данные для входа'
+    body = "Для входа на сайт используйте логин: {0} или почту, пароль: {1}".format(username, password)
+    send_mail(subject, body, settings.EMAIL_HOST_USER, [email])
 

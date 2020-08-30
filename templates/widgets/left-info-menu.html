@@ -11,11 +11,11 @@
 		</a>
 		<div class="collapse list-group-level1" id="{{ category.id }}">
 			{% for subtype in category.subtype.all reversed %}
-			<a href="{% url 'subcategory_detail_view' category.slug subtype.slug  %}" class="list-group-item" data-parent="#{{ category.id }}">{{ subtype.name }}</a>
+			<a href="{% url 'product:subcategory_detail_view' category.slug subtype.slug  %}" class="list-group-item" data-parent="#{{ category.id }}">{{ subtype.name }}</a>
 			{% endfor %}
 		</div>
 		{% else %}
-		<a href="{% url 'components_view' %}" data-toggle="no-collapse" class="list-group-item">Комплектующие</a>
+		<a href="{% url 'components:components_view' %}" data-toggle="no-collapse" class="list-group-item">Комплектующие</a>
 		{% endif %}
 		{% endfor %}
 	</div>
@@ -28,10 +28,10 @@
 			<div class="product-on-sale">
 				<div class="row">
 					<div class="col-xl-auto col-md-12">
-						<a href="{% url 'product_detail_view' product.id %}"><img alt="{{ product.name }}" src="{{ product.image.url }}" width="50"></a>
+						<a href="{% url 'product:product_detail_view' product.id %}"><img alt="{{ product.name }}" src="{{ product.image.url }}" width="50"></a>
 					</div>
 					<div class="col-xl-{{ caption_width }} col-md-12">
-						<a href="{% url 'product_detail_view' product.id %}" class="pr-sale-name">{{ product.name }}</a><br style="clear:both" />
+						<a href="{% url 'product:product_detail_view' product.id %}" class="pr-sale-name">{{ product.name }}</a><br style="clear:both" />
 						<span class="sale-size">(-{{ product.sale }}%)</span>
 						<p class="pr-sale-price">{{ product.new_price }}</p>
 					</div>
