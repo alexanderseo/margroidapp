@@ -16,6 +16,7 @@ class ShowRoomPage(View):
         compare_list = request.session.get('comparison_list', 0)
         compare_list_count = len(compare_list) if compare_list else 0
         seo = ShowRoomModel.objects.first()
+        foto_showroom = seo.fotos.all()
         context = {
             'categories': categories,
             'products_on_sale': products_on_sale,
@@ -23,5 +24,6 @@ class ShowRoomPage(View):
             'comparison_list': compare_list_count,
             'cart_items_count': cart_objects_count,
             'seo': seo,
+            'foto_showroom': foto_showroom,
         }
         return render(request, 'showroom/showroom.html', context)

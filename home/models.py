@@ -73,9 +73,9 @@ class ContactBlockHomePage(models.Model):
                                     default='Контакты',
                                     verbose_name='Название элемента')
     text_header = models.CharField(max_length=200,
-                                       blank=True,
-                                       help_text='Текст до 200 символов',
-                                       verbose_name='Текст или адрес')
+                                   blank=True,
+                                   help_text='Текст до 200 символов',
+                                   verbose_name='Текст или адрес')
     phone_one = models.CharField(max_length=20,
                                  blank=True,
                                  help_text='пишется ф формате: +7(999)-888-6655',
@@ -121,3 +121,38 @@ class ContactBlockFooter(models.Model):
 
     def clean(self):
         validate_only_one_instance(self)
+
+
+class Slider(models.Model):
+    name = models.CharField(max_length=100,
+                            help_text='просто название слайда до 100 символов, оно не отображается',
+                            verbose_name='Название слайда')
+    title = models.CharField(blank=True,
+                             max_length=150,
+                             help_text='до 150 символов, заполнять необязательно',
+                             verbose_name='Заголовок на слайде')
+    description = models.CharField(blank=True,
+                                   max_length=150,
+                                   help_text='до 150 символов, заполнять необязательно',
+                                   verbose_name='Текст под заголовком')
+    slideimg = models.ImageField(blank=False,
+                                 upload_to='slider/',
+                                 help_text='изображение обрежется, поэтому лучше брать большое',
+                                 verbose_name='Добавить изображение')
+    namebutton = models.CharField(blank=True,
+                                  max_length=15,
+                                  help_text='до 15 символов, необязательно',
+                                  verbose_name='Название кнопки')
+    linkbutton = models.URLField(blank=True,
+                                 help_text='заполнить, если написали название кнопки',
+                                 verbose_name='Ссылка на кнопку')
+    available = models.BooleanField(default=True,
+                                    help_text='Можно отключать слайд без удаления',
+                                    verbose_name='Активность')
+
+    class Meta:
+        verbose_name = '05: Блок Слайдер'
+        verbose_name_plural = '05: Слайдеры'
+
+    def __str__(self):
+        return self.name

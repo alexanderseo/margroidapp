@@ -22,14 +22,14 @@
 
 <div class="container">
 	<div class="row">
-		{% include 'extended_filter.html' %}
+		{% include 'widgets/extended_filter.html' %}
 		<div class="col-xl-8 col-md-8" id="category-subcategory-detail">
 			<div class="nav-helper">
-				<a href="{% url 'base_view' %}">Главная</a>
+				<a href="{% url 'home:home-page' %}">Главная</a>
 				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
 				{% if current_subcategory %}
-				<a href="{% url 'category_detail_view' current_category.slug %}">{{ current_category.name }}</a>
+				<a href="{% url 'product:category_detail_view' current_category.slug %}">{{ current_category.name }}</a>
 				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 				<span>{{ current_subcategory.name }}</span>
 				{% else %}
@@ -86,8 +86,8 @@
 						<div class="ribbon"><span>{{ product.sale }}% SALE</span></div>
 						{% endif %}
 						<div class="filter-product-item">
-							<a href="{% url 'product_detail_view' product.id %}"><img src="{{ product.image.url }}" height="200"></a>
-							<p align="center" class="filter-product-name"><a href="{% url 'product_detail_view' product.id %}">{{ product.name }}</a></p>
+							<a href="{% url 'product:product_detail_view' product.id %}"><img src="{{ product.image.url }}" height="200"></a>
+							<p align="center" class="filter-product-name"><a href="{% url 'product:product_detail_view' product.id %}">{{ product.name }}</a></p>
 							{% if product.on_sale %}
 							<p class="new-price">{{ product.new_price|floatformat }}</p>
 							{% else %}

@@ -12,7 +12,7 @@
 			<div class="nav-helper">
 				<a href="{% url 'home:home-page' %}">Главная</a>
 				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-				<a href="{% url 'news_view' %}">Новости</a>
+				<a href="{% url 'news:news_view' %}">Новости</a>
 				<i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 				<span>{{ current_news_item.timestamp|date:'d-m-Y' }}</span>
 			</div>

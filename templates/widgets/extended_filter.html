@@ -11,11 +11,11 @@
 		</a>
 		<div class="collapse list-group-level1" id="{{ category.id }}">
 			{% for subtype in category.subtype.all %}
-			<a href="{% url 'subcategory_detail_view' category.slug subtype.slug  %}" class="list-group-item" data-parent="#{{ category.id }}">{{ subtype.name }}</a>
+			<a href="{% url 'product:subcategory_detail_view' category.slug subtype.slug  %}" class="list-group-item" data-parent="#{{ category.id }}">{{ subtype.name }}</a>
 			{% endfor %}
 		</div>
 		{% else %}
-		<a href="{% url 'components_view' %}" data-toggle="no-collapse" class="list-group-item">Комплектующие</a>
+		<a href="{% url 'components:components_view' %}" data-toggle="no-collapse" class="list-group-item">Комплектующие</a>
 		{% endif %}
 		{% endfor %}
 	</div>
@@ -86,9 +86,9 @@
 					<div class="col-xl-12">
 						<button class="btn" type="submit">Применить</button>
 						{% if current_subcategory %}
-						<a href="{% url 'subcategory_detail_view' current_category.slug current_subcategory.slug %}" class="btn">Сбросить</a>
+						<a href="{% url 'product:subcategory_detail_view' current_category.slug current_subcategory.slug %}" class="btn">Сбросить</a>
 						{% else %}
-						<a href="{% url 'components_view' %}" class="btn">Сбросить</a>
+						<a href="{% url 'components:components_view' %}" class="btn">Сбросить</a>
 						{% endif %}
 					</div>
 				</form>

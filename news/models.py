@@ -31,8 +31,8 @@ class PageNewsSeo(models.Model):
                                    verbose_name='SEO Description')
 
     class Meta:
-        verbose_name = 'Новость'
-        verbose_name_plural = 'Новости'
+        verbose_name = '01: Новости - общая страница'
+        verbose_name_plural = '01: Новости - общая страница'
 
     def __str__(self):
         return self.name
@@ -68,8 +68,9 @@ class News(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Статья'
-        verbose_name_plural = 'Статьи'
+        verbose_name = '02: Статья'
+        verbose_name_plural = '02: Статьи'
+        ordering = ['timestamp']
 
     def __str__(self):
         return self.name

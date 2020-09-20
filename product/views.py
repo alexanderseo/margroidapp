@@ -9,13 +9,13 @@ class CategoryPage(View):
     """
     Вывод данных страницу основной категории
     """
-    def get(self, request, slug):
+    def get(self, request, category_slug):
         cart, cart_objects_count = get_users_cart(request)
-        if slug == 'komplektuyushie':
-            category_products = Product.objects.filter(slug=slug)
+        if category_slug == 'komplektuyushie':
+            category_products = Product.objects.filter(slug=category_slug)
         else:
-            category_products = Category.objects.get(slug=slug)
-        current_category = Category.objects.get(slug=slug)
+            category_products = Category.objects.get(slug=category_slug)
+        current_category = Category.objects.get(slug=category_slug)
         categories = Category.objects.all()
         products_on_sale = Product.objects.filter(on_sale=True)[:4]
         compare_list = request.session.get('comparison_list', 0)
@@ -36,7 +36,7 @@ class SubCategoryPage(View):
     """
         Вывод данных страницу подкатегории
         """
-    def get(request, category_slug, subcategory_slug):
+    def get(self, request, category_slug, subcategory_slug):
         cart, cart_objects_count = get_users_cart(request)
         sort_query = request.GET.get('sort', None)
         current_page = request.GET.get('page')
@@ -96,7 +96,7 @@ class SubCategoryPage(View):
 
 class ProductPage(View):
     """
-    Вывод данных страницу товара
+    Вывод данных на страницу товара
     """
     def get(self, request, product_id=None):
         current_product = Product.objects.get(id=product_id)

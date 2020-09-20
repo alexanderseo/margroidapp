@@ -20,9 +20,9 @@
 					<div class="row">
 						{% for news_item in news %}
 						<div class="col-xl-12 news-item" style="position: relative;">
-							<p><a href="{% url 'detail_news_view' news_item.slug %}">{{ news_item.title }}</a></p>
+							<p><a href="{% url 'news:detail_news_view' news_item.slug %}">{{ news_item.title }}</a></p>
 							<p class="text-muted">{{ news_item.timestamp|date:'d-m-Y' }}</p>
-							<p>{{ news_item.content|truncatechars:200 }}<a href="{% url 'detail_news_view' news_item.slug %}" style="text-decoration: none;">читать далее</a></p>
+							<p>{{ news_item.content|truncatechars:200|safe }}<a href="{% url 'news:detail_news_view' news_item.slug %}" style="text-decoration: none;">читать далее</a></p>
 						</div>
 						{% endfor %}
 					</div>

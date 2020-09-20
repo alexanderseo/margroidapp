@@ -112,7 +112,7 @@ class Product(models.Model):
     vendor_code = models.CharField(max_length=100, verbose_name='Артикул', blank=True)
     in_stock = models.PositiveIntegerField(default=0, verbose_name='Наличие (шт)')
     complect = models.ManyToManyField('Product', verbose_name='Комплектующие', blank=True)
-    color = models.ManyToManyField('Colors', verbose_name='Цвета', blank=True)
+    color = models.ManyToManyField('Colors', related_name='colors_product', verbose_name='Цвета', blank=True)
     price = models.PositiveIntegerField(null=True, verbose_name='Цена')
     on_sale = models.BooleanField(default=False, blank=True, verbose_name='На скидке')
     sale = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name='Размер скидки')

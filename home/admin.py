@@ -1,5 +1,5 @@
 from django.contrib import admin
-from home.models import Header, SeoHomePage, ContactBlockHomePage, ContactBlockFooter
+from home.models import Header, SeoHomePage, ContactBlockHomePage, ContactBlockFooter, Slider
 
 
 @admin.register(Header)
@@ -20,3 +20,8 @@ class ContactBlockHomePageAdmin(admin.ModelAdmin):
 @admin.register(ContactBlockFooter)
 class ContactBlockFooterAdmin(admin.ModelAdmin):
     list_display = ('name_element', 'email', 'phone_one', 'phone_two', )
+
+
+@admin.register(Slider)
+class SliderAdmin(admin.ModelAdmin):
+    list_display = ('name', 'available', )

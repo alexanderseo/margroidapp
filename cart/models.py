@@ -205,7 +205,7 @@ class DeliveryPageSeo(models.Model):
 
 class FotogaleryShowRoom(models.Model):
     """
-    Модель фото для страницы Доставка
+    Модель фото для страницы Доставка (имя модели забыл переименовать)
     """
     showroomimg = models.ForeignKey(DeliveryPageSeo,
                                     related_name='fotosdelivery',

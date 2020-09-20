@@ -203,6 +203,8 @@ def delivery_view(request):
     compare_list = request.session.get('comparison_list', 0)
     compare_list_count = len(compare_list) if compare_list else 0
     delivery_types = DeliveryType.objects.all()
+    delivery_page = DeliveryPageSeo.objects.first()
+    delivery_foto = delivery_page.fotosdelivery.all()
     context = {
         'categories': categories,
         'products_on_sale': products_on_sale,
@@ -210,5 +212,7 @@ def delivery_view(request):
         'comparison_list': compare_list_count,
         'cart_items_count': cart_objects_count,
         'delivery_types': delivery_types,
+        'delivery_page': delivery_page,
+        'delivery_foto': delivery_foto,
     }
     return render(request, 'cart/delivery.html', context)
